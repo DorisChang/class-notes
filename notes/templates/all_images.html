@@ -1,11 +1,6 @@
 {% extends "_base.html" %}
 {% block bodycontent %}
 <h2>Notes</h2>
-{% for image in images %}
-<a href="/image?id={{image.key.urlsafe}}">{{image.name}}</a><br>
-{% empty %}
-There are no notes.
-{% endfor %}
 <link rel="stylesheet" href="/i/styles.css">
 <script src="/i/script.js"></script>
 <div class="dropdown">
@@ -19,4 +14,9 @@ There are no notes.
     {% endfor %}
   </div>
 </div>
+{% for image in images %}
+<a href="/image?id={{image.key.urlsafe}}">{{image.name}}</a><br>
+{% empty %}
+There are no notes.
+{% endfor %}
 {% endblock %}
