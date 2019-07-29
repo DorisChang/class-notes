@@ -16,6 +16,7 @@
 </div>
 {% for image in images %}
 <a href="/image?id={{image.key.urlsafe}}">{{image.name}}</a><br><br>
+
 {% empty %}
 There are no notes.
 {% endfor %}
