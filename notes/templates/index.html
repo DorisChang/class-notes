@@ -2,11 +2,20 @@
 {% block bodycontent %}
 <h2>Upload an image</h2>
 <form method="post" action="{{upload_url}}" enctype="multipart/form-data">
-    Name:<br>
+    Class:<br>
     <input name="name">
+    <br><br><br>
+    School:<br>
+    <input name="school">
+    <br><br><br>
+    Professor:<br>
+    <input name="professor">
     <br><br><br>
     File:<br>
     <input type="file" name="file">
+    <br><br><br>
+    Description:<br>
+    <input name="description">
     <br><br><br>
     <input type="submit">
 </form>
