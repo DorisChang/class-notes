@@ -3,5 +3,11 @@ api_version: 1
 threadsafe: yes
 
 handlers:
+- url: /p
+  static_dir: images
+  
+- url: /i
+  static_dir: static
+
 - url: /.*
   script: main.app

@@ -28,7 +28,7 @@ def get_params():
     if user:
         result['logout_url'] = users.create_logout_url('/')
         result['user'] = user.email()
-        result['upload_url'] = blobstore.create_upload_url('/upload')
+        result['upload_url'] = blobstore.create_upload_url('/upload')  # redirect to /upload once blobstore takes object
     else:
         result['login_url'] = users.create_login_url()
     return result
@@ -52,7 +52,7 @@ class ImagesHandler(webapp2.RequestHandler):
         for i in q.fetch():
             # we append each image to the list
             result.append(i)
-      
+
         # we will pass this image list to the template
         params['images'] = result
         render_template(self, 'images.html', params)
@@ -72,6 +72,9 @@ class ImageHandler(webapp2.RequestHandler):
         # we'll set some parameters and pass this to the template
         params['image_id'] = image_id
         params['image_name'] = my_image.name
+        params['image_description'] = my_image.description
+        params['image_school'] = my_image.school
+        params['image_professor'] = my_image.professor
         render_template(self, 'image.html', params)
 
 
@@ -82,21 +85,28 @@ class FileUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
     
         if params['user']:
             upload_files = self.get_uploads()
-            blob_info = upload_files[0]
-            type = blob_info.content_type
+            for blob_info in upload_files:
+                # blob_info = upload_files[0]
+                type = blob_info.content_type
 
-            # we want to make sure the upload is a known type.
-            if type in ['image/jpeg', 'image/png', 'image/gif', 'image/webp']:
-                name = self.request.get('name')
-                my_image = MyImage()
-                my_image.name = name
-                my_image.user = params['user']
+                # we want to make sure the upload is a known type.
+                if type in ['image/jpeg', 'image/png', 'image/gif', 'image/webp']:
+                    name = self.request.get('name')
+                    description = self.request.get('description')
+                    school = self.request.get('school')
+                    professor = self.request.get('professor')
+                    my_image = MyImage()
+                    my_image.name = name
+                    my_image.description = description
+                    my_image.school = school
+                    my_image.professor = professor
+                    my_image.user = params['user']
 
-                # image is a BlobKeyProperty, so we will retrieve the key for this blob
-                my_image.image = blob_info.key()
-                my_image.put()
-                image_id = my_image.key.urlsafe()
-                self.redirect('/image?id=' + image_id)
+                    # image is a BlobKeyProperty, so we will retrieve the key for this blob
+                    my_image.image = blob_info.key()
+                    my_image.put()
+                    image_id = my_image.key.urlsafe()  # key for the object that can be passed around
+                    self.redirect('/image?id=' + image_id)
 
 
 ###############################################################################
@@ -169,13 +179,17 @@ class AllImagesHandler(webapp2.RequestHandler):
         # self.response.out.write(result)
         # we will pass this image list to the template
         params['images'] = result
+        my_image = MyImage()
+        params['image_school'] = my_image.school
         render_template(self, 'all_images.html', params)
-
 
 ###############################################################################
 class MyImage(ndb.Model):
     name = ndb.StringProperty()
     image = ndb.BlobKeyProperty()
+    description = ndb.StringProperty()
+    school = ndb.StringProperty()
+    professor = ndb.StringProperty()
     user = ndb.StringProperty()
 
 

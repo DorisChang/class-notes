@@ -1,9 +1,23 @@
 {% extends "_base.html" %}
 {% block bodycontent %}
-<h2>Images</h2>
+<h2>Notes</h2>
+<link rel="stylesheet" href="/i/styles.css">
+<script src="/i/script.js"></script>
+<div class="dropdown">
+  <button onclick="myFunction()" class="dropbtn">Dropdown</button>
+  <div id="myDropdown" class="dropdown-content">
+    <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()">
+    {% for image in images %}
+    <a href="#{{image.key.urlsafe}}">{{image.school}}</a>
+    {% empty %}
+    There are no schools.
+    {% endfor %}
+  </div>
+</div>
 {% for image in images %}
-<a href="/image?id={{image.key.urlsafe}}">{{image.name}}</a>
+<a href="/image?id={{image.key.urlsafe}}">{{image.name}}</a><br><br>
+
 {% empty %}
-There are no images.
+There are no notes.
 {% endfor %}
 {% endblock %}
