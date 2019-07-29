@@ -1,13 +1,18 @@
 <html>
+    <head>
+        <link rel="stylesheet" href="/i/topbar.css">
+    </head>
     <body>
-        <h1>Images Demo</h1>
-        {% if logout_url %}
-            <a href="/">Upload</a> | 
-            <a href="/images">My Images</a> | 
-            <a href="/all-images">All Images</a> | 
-            <a href="{{logout_url}}">Sign Out</a><br><br>{% block bodycontent %}{% endblock %}
-        {% else %}
-            <a href="{{login_url}}">Sign In</a><br><br>Please sign in.
-        {% endif %}
+            <img src="/p/logo.jpg">
+            <section class="topbar">
+            {% if logout_url %}
+                <a href="/">Upload</a> | 
+                <a href="/images">My Images</a> | 
+                <a href="/all-images">All Images</a> | 
+                <a href="{{logout_url}}">Sign Out</a><br><br>{% block bodycontent %}{% endblock %}
+            {% else %}
+                <a href="{{login_url}}">Sign In</a><br><br>Please sign in.
+            {% endif %}
+            </section>
     </body>
 </html>

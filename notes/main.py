@@ -178,8 +178,9 @@ class AllImagesHandler(webapp2.RequestHandler):
         # self.response.out.write(result)
         # we will pass this image list to the template
         params['images'] = result
+        my_image = MyImage()
+        params['image_school'] = my_image.school
         render_template(self, 'all_images.html', params)
-
 
 ###############################################################################
 class MyImage(ndb.Model):
