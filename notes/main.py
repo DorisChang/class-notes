@@ -1,5 +1,3 @@
-import datetime
-import logging
 import os
 import webapp2
 
@@ -20,7 +18,7 @@ def render_template(handler, templatename, templatevalues={}):
 
 
 ###############################################################################
-# This function is for convenience - we'll use it to generate some general 
+# This function is for convenience - we'll use it to generate some general
 # page parameters.
 def get_params():
     result = {}
@@ -28,17 +26,18 @@ def get_params():
     if user:
         result['logout_url'] = users.create_logout_url('/')
         result['user'] = user.email()
-        result['upload_url'] = blobstore.create_upload_url('/upload')  # redirect to /upload once blobstore takes object
+        result['upload_url'] = blobstore.create_upload_url('/upload')
+        # redirect to /upload once blobstore takes object
     else:
         result['login_url'] = users.create_login_url()
     return result
-  
+
 
 ###############################################################################
 class MainHandler(webapp2.RequestHandler):
-  def get(self):
-    params = get_params()
-    render_template(self, 'index.html', params)
+    def get(self):
+        params = get_params()
+        render_template(self, 'index.html', params)
 
 
 ###############################################################################
@@ -62,10 +61,8 @@ class ImagesHandler(webapp2.RequestHandler):
 class ImageHandler(webapp2.RequestHandler):
     def get(self):
         params = get_params()
-    
         # we'll get the ID from the request
         image_id = self.request.get('id')
-    
         # this will allow us to retrieve it from NDB
         my_image = ndb.Key(urlsafe=image_id).get()
 
@@ -82,7 +79,6 @@ class ImageHandler(webapp2.RequestHandler):
 class FileUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
     def post(self):
         params = get_params()
-    
         if params['user']:
             upload_files = self.get_uploads()
             for blob_info in upload_files:
@@ -110,7 +106,7 @@ class FileUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
 
 
 ###############################################################################
-# note: you could also use images.get_serving_url here - that has 
+# note: you could also use images.get_serving_url here - that has
 # some arguments you could use directly.
 #
 # see https://cloud.google.com/appengine/docs/python/refdocs/google.appengine.api.images#google.appengine.api.images.get_serving_url
@@ -182,7 +178,6 @@ class AllImagesHandler(webapp2.RequestHandler):
         # we will pass this image list to the template
         params['images'] = result
         render_template(self, 'all_images.html', params)
-
 
 
 ###############################################################################
