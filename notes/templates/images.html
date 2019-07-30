@@ -1,12 +1,12 @@
 {% extends "_base.html" %}
 {% block bodycontent %}
 <head>
-    <title>Browse Your Images</title>
+    <title>Browse Your Notes</title>
 </head>
 <h2>Notes</h2>
 {% for image in images %}
-<a href="/image?id={{image.key.urlsafe}}">{{image.name}}</a><br><br> 
+<a href="/my-image?id={{image.key.urlsafe}}">{{image.name}}</a><br><br> 
 {% empty %}
-There are no images.
+There are no notes.
 {% endfor %}
 {% endblock %}

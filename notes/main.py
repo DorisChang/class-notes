@@ -76,6 +76,24 @@ class ImageHandler(webapp2.RequestHandler):
         render_template(self, 'image.html', params)
 
 
+class MyImageHandler(webapp2.RequestHandler):
+    def get(self):
+        params = get_params()
+        # we'll get the ID from the request
+        image_id = self.request.get('id')
+
+        # this will allow us to retrieve it from NDB
+        my_image = ndb.Key(urlsafe=image_id).get()
+
+        # we'll set some parameters and pass this to the template
+        params['image_id'] = image_id
+        params['image_name'] = my_image.name
+        params['image_description'] = my_image.description
+        params['image_school'] = my_image.school
+        params['image_professor'] = my_image.professor
+        render_template(self, 'my_image.html', params)
+
+
 ###############################################################################
 class FileUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
     def post(self):
@@ -98,8 +116,7 @@ class FileUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
                     my_image.school = school
                     my_image.professor = professor
                     my_image.user = params['user']
-
-                    # image is a BlobKeyProperty, so we will retrieve the key for this blob
+                   # image is a BlobKeyProperty, so we will retrieve the key for this blob
                     my_image.image = blob_info.key()
                     my_image.put()
                     image_id = my_image.key.urlsafe()  # key for the object that can be passed around
@@ -181,13 +198,34 @@ class AllImagesHandler(webapp2.RequestHandler):
         render_template(self, 'all_images.html', params)
 
 
-
 class DeleteHandler(blobstore_handlers.BlobstoreUploadHandler):
     def post(self):
         image_id = self.request.get('id')
         ndb.Key(urlsafe=image_id).delete()
         self.redirect('/')
 
+
+class SaveEditsHandler(webapp2.RequestHandler):
+    def post(self):
+        params = get_params()
+
+        name = self.request.get('name')
+        school = self.request.get('school')
+        professor = self.request.get('professor')
+        description = self.request.get('description')
+
+        image_id = self.request.get('id')
+
+        params['image_id'] = image_id
+        params['image_name'] = name
+        params['image_description'] = description
+        params['image_school'] = school
+        params['image_professor'] = professor
+
+        # p = MyImage(name=name, school=name, professor=professor, description=description)
+        # p.put()
+
+        # render_template(self, '/my-image?id={{image.key.urlsafe}}', params)
 
 
 ###############################################################################
@@ -205,10 +243,12 @@ mappings = [
     ('/', MainHandler),
     ('/images', ImagesHandler),
     ('/image', ImageHandler),
+    ('/my-image', MyImageHandler),
     ('/upload', FileUploadHandler),
     ('/delete', DeleteHandler),
     ('/img', ImageManipulationHandler),
     ('/all-images', AllImagesHandler),
-    ('/delete', DeleteHandler)
+    ('/delete', DeleteHandler),
+    ('/save-edits', SaveEditsHandler)
 ]
 app = webapp2.WSGIApplication(mappings, debug=True)
