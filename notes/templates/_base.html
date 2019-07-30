@@ -7,8 +7,8 @@
             <section class="topbar">
             {% if logout_url %}
                 <a href="/">Upload</a> | 
-                <a href="/images">My Images</a> | 
-                <a href="/all-images">All Images</a> | 
+                <a href="/images">My Notes</a> | 
+                <a href="/all-images">All Notes</a> | 
                 <a href="{{logout_url}}">Sign Out</a><br><br>{% block bodycontent %}{% endblock %}
             {% else %}
                 <a href="{{login_url}}">Sign In</a><br><br>Please sign in.

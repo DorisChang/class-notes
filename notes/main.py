@@ -20,7 +20,7 @@ def render_template(handler, templatename, templatevalues={}):
 
 
 ###############################################################################
-# This function is for convenience - we'll use it to generate some general 
+# This function is for convenience - we'll use it to generate some general
 # page parameters.
 def get_params():
     result = {}
@@ -32,13 +32,13 @@ def get_params():
     else:
         result['login_url'] = users.create_login_url()
     return result
-  
+
 
 ###############################################################################
 class MainHandler(webapp2.RequestHandler):
-  def get(self):
-    params = get_params()
-    render_template(self, 'index.html', params)
+    def get(self):
+        params = get_params()
+        render_template(self, 'index.html', params)
 
 
 ###############################################################################
@@ -62,10 +62,10 @@ class ImagesHandler(webapp2.RequestHandler):
 class ImageHandler(webapp2.RequestHandler):
     def get(self):
         params = get_params()
-    
+
         # we'll get the ID from the request
         image_id = self.request.get('id')
-    
+
         # this will allow us to retrieve it from NDB
         my_image = ndb.Key(urlsafe=image_id).get()
 
@@ -82,7 +82,7 @@ class ImageHandler(webapp2.RequestHandler):
 class FileUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
     def post(self):
         params = get_params()
-    
+
         if params['user']:
             upload_files = self.get_uploads()
             for blob_info in upload_files:
@@ -184,6 +184,15 @@ class AllImagesHandler(webapp2.RequestHandler):
         render_template(self, 'all_images.html', params)
 
 
+class DeleteHandler(webapp2.RequestHandler):
+    def get(self):
+        # we'll get the ID from the request
+        image_id = self.request.get('id')
+        # this will allow us to retrieve it from NDB
+        ndb.Key(urlsafe=image_id).delete()
+        self.redirect('/images')
+
+
 
 ###############################################################################
 class MyImage(ndb.Model):
@@ -203,5 +212,6 @@ mappings = [
     ('/upload', FileUploadHandler),
     ('/img', ImageManipulationHandler),
     ('/all-images', AllImagesHandler),
+    ('/delete', DeleteHandler)
 ]
 app = webapp2.WSGIApplication(mappings, debug=True)
