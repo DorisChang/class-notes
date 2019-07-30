@@ -1,18 +1,58 @@
 <html>
     <head>
-        <link rel="stylesheet" href="/i/topbar.css">
+        <style>
+            body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            }
+
+            .topnav {
+            overflow: hidden;
+            background-color: #333;
+            }
+
+            .topnav a {
+            float: right;
+            color: #f2f2f2;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+            font-size: 17px;
+            }
+
+            .topnav a:hover {
+            background-color: #ddd;
+            color: black;
+            }
+
+            .topnav a.active {
+            background-color: #4CAF50;
+            color: white;
+            }
+
+
+            #logo {
+            width: 10%;
+            height: 7.5%;
+            }
+</style>
     </head>
     <body>
+        <div class="topnav">
             <img id="logo" src="/p/logo.jpg">
-            <section class="topbar">
             {% if logout_url %}
-                <a href="/">Upload</a> | 
-                <a href="/images">My Notes</a> | 
-                <a href="/all-images">All Notes</a> | 
-                <a href="{{logout_url}}">Sign Out</a><br><br>{% block bodycontent %}{% endblock %}
+                <a href="/">Upload</a>
+                <a href="/images">My Notes</a>
+                <a href="/all-images">All Notes</a>
+                <a href="{{logout_url}}">Sign Out</a>
             {% else %}
-                <a href="{{login_url}}">Sign In</a><br><br>Please sign in.
+                <a href="{{login_url}}">Sign In</a>
             {% endif %}
-            </section>
+        </div>
+        {% if logout_url %}
+        {% block bodycontent %}{% endblock %}
+        {% else %}
+        Please sign in.
+        {% endif %}
     </body>
 </html>
