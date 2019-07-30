@@ -1,5 +1,8 @@
 {% extends "_base.html" %}
 {% block bodycontent %}
+<head>
+    <title>Upload Note - Classnotes</title>
+</head>
 <h2>Upload a note</h2>
 <form method="post" action="{{upload_url}}" enctype="multipart/form-data">
     Class:<br>
@@ -17,8 +20,8 @@
     File:<br>
     <input type="file" name="file1">
     <br><br>
-    <input type="file" name="file2">
-    <br><br><br>
+    <!--<input type="file" name="file2">
+    <br><br><br>-->
     <input type="submit">
 </form>
 {% endblock %}
