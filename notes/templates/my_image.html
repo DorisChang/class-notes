@@ -5,10 +5,11 @@
     <title>{{image_name}}</title>
 </head>
 <form method="post" action="/save-edits">
-<h3>Class: <input type="text" value="{{image_name}}"></h3>
-<h3>School: <input type="text" value="{{image_school}}"></h3>
-<h3>Professor: <input type="text" value="{{image_professor}}"></h3>
-<h3>Description: <input type="text" value="{{image_description}}"></h3>
+<h3>Class: <input type="text" name="name" value="{{image_name}}"></h3>
+<h3>School: <input type="text" name="school" value="{{image_school}}"></h3>
+<h3>Professor: <input type="text" name="professor" value="{{image_professor}}"></h3>
+<input type="hidden" name="id" value="{{image_id}}"/>
+<h3>Description: <input type="text" name="description" value="{{image_description}}"></h3>
 <input type="submit" value="Update"/>
 </form>
 <br><br>
