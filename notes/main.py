@@ -202,30 +202,48 @@ class DeleteHandler(blobstore_handlers.BlobstoreUploadHandler):
     def post(self):
         image_id = self.request.get('id')
         ndb.Key(urlsafe=image_id).delete()
-        self.redirect('/')
+        self.redirect('/images')
+
+
+def get_note(img):
+    print 'Image value: ' + img
+    key = ndb.Key(urlsafe=img)
+    return key.get()
 
 
 class SaveEditsHandler(webapp2.RequestHandler):
     def post(self):
-        params = get_params()
+        '''params = get_params()
 
         name = self.request.get('name')
         school = self.request.get('school')
         professor = self.request.get('professor')
         description = self.request.get('description')
 
-        image_id = self.request.get('id')
+        image_id = self.request.get('id')'''
 
-        params['image_id'] = image_id
+        name = self.request.get('name')
+        school = self.request.get('school')
+        professor = self.request.get('professor')
+        description = self.request.get('description')
+        img = self.request.get('id')
+
+        n = get_note(img)
+        n.name = name
+        n.school = school
+        n.professor = professor
+        n.description = description
+        n.put()
+
+        params = get_params()
+
+        params['image_id'] = img
         params['image_name'] = name
         params['image_description'] = description
         params['image_school'] = school
         params['image_professor'] = professor
 
-        # p = MyImage(name=name, school=name, professor=professor, description=description)
-        # p.put()
-
-        # render_template(self, '/my-image?id={{image.key.urlsafe}}', params)
+        render_template(self, 'my_image.html', params)
 
 
 ###############################################################################
@@ -245,7 +263,6 @@ mappings = [
     ('/image', ImageHandler),
     ('/my-image', MyImageHandler),
     ('/upload', FileUploadHandler),
-    ('/delete', DeleteHandler),
     ('/img', ImageManipulationHandler),
     ('/all-images', AllImagesHandler),
     ('/delete', DeleteHandler),
