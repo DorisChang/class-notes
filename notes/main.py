@@ -180,6 +180,13 @@ class AllImagesHandler(webapp2.RequestHandler):
         render_template(self, 'all_images.html', params)
 
 
+class DeleteHandler(blobstore_handlers.BlobstoreUploadHandler):
+    def post(self):
+        image_id = self.request.get('id')
+        ndb.Key(urlsafe=image_id).delete()
+        self.redirect('/')
+
+
 ###############################################################################
 class MyImage(ndb.Model):
     name = ndb.StringProperty()
@@ -196,6 +203,7 @@ mappings = [
     ('/images', ImagesHandler),
     ('/image', ImageHandler),
     ('/upload', FileUploadHandler),
+    ('/delete', DeleteHandler),
     ('/img', ImageManipulationHandler),
     ('/all-images', AllImagesHandler),
 ]

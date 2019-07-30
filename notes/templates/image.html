@@ -1,5 +1,8 @@
 {% extends "_base.html" %}
 {% block bodycontent %}
+<head>
+    <title>{{image_name}}</title>
+</head>
 <h2>Class: {{image_name}}</h2>
 <h3>School: {{image_school}}</h3>
 <h3>Professor: {{image_professor}}</h3>
@@ -7,4 +10,8 @@
 <br><br>
 <img src="/img?id={{image_id}}&height=320&width=320">
 <br><br>
+<form method="post" action="/delete" enctype="multipart/form-data">
+<input type="hidden" name="id" value="{{image_id}}"/>
+<input type="submit" value="Delete"/>
 {% endblock %}
+
