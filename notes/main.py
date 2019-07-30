@@ -165,6 +165,8 @@ class ImageManipulationHandler(webapp2.RequestHandler):
         self.response.out.write(result)
 
 ###############################################################################
+
+
 class AllImagesHandler(webapp2.RequestHandler):
     def get(self):
         params = get_params()
@@ -176,12 +178,12 @@ class AllImagesHandler(webapp2.RequestHandler):
             # we append each image to the list
             result.append(i)
 
-        # self.response.out.write(result)
+        # self.response.out.write(result[0])
         # we will pass this image list to the template
         params['images'] = result
-        my_image = MyImage()
-        params['image_school'] = my_image.school
         render_template(self, 'all_images.html', params)
+
+
 
 ###############################################################################
 class MyImage(ndb.Model):
