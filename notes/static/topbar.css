@@ -4,12 +4,7 @@
     left: 50%
 }*/
 
-img.pages {
-    width: 640px;
-    height: 640px;
-}
-
-img.top {
+#logo {
     width: 10%;
     height: 7.5%;
 }

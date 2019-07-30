@@ -15,7 +15,12 @@
   </div>
 </div>
 {% for image in images %}
-<a href="/image?id={{image.key.urlsafe}}">{{image.name}}</a><br>
+<img src="/img?id={{image.key.urlsafe}}&width=640&height=640" border="0"><br>
+School:<br>
+{{image.school}}<br>
+Class: <br>
+{{image.name}}<br>
+<a href="/image?id={{image.key.urlsafe}}">More Info</a><br>
 {% empty %}
 There are no notes.
 {% endfor %}

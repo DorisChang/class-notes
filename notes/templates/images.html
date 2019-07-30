@@ -2,7 +2,7 @@
 {% block bodycontent %}
 <h2>Notes</h2>
 {% for image in images %}
-<a href="/image?id={{image.key.urlsafe}}">{{image.name}}</a><br>
+<a href="/image?id={{image.key.urlsafe}}">{{image.name}}</a><br><br> 
 {% empty %}
 There are no images.
 {% endfor %}
