@@ -124,12 +124,7 @@ class FileUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
 
 
 ###############################################################################
-# note: you could also use images.get_serving_url here - that has
-# some arguments you could use directly.
-#
-# see https://cloud.google.com/appengine/docs/python/refdocs/google.appengine.api.images#google.appengine.api.images.get_serving_url
-# for more details on this approach.
-#
+
 class ImageManipulationHandler(webapp2.RequestHandler):
     def get(self):
 
@@ -187,14 +182,17 @@ class AllImagesHandler(webapp2.RequestHandler):
 
         # first we retrieve the images for the current user
         q = MyImage.query()
-        result = list()
+        image_result = list()
+        school_result = list()
         for i in q.fetch():
             # we append each image to the list
-            result.append(i)
+            image_result.append(i)
+            if i.school not in school_result:
+                school_result.append(i.school)
 
-        # self.response.out.write(result[0])
-        # we will pass this image list to the template
-        params['images'] = result
+        params['images'] = image_result
+        params['schools'] = school_result
+ 
         render_template(self, 'all_images.html', params)
 
 
@@ -206,22 +204,12 @@ class DeleteHandler(blobstore_handlers.BlobstoreUploadHandler):
 
 
 def get_note(img):
-    print 'Image value: ' + img
     key = ndb.Key(urlsafe=img)
     return key.get()
 
 
 class SaveEditsHandler(webapp2.RequestHandler):
     def post(self):
-        '''params = get_params()
-
-        name = self.request.get('name')
-        school = self.request.get('school')
-        professor = self.request.get('professor')
-        description = self.request.get('description')
-
-        image_id = self.request.get('id')'''
-
         name = self.request.get('name')
         school = self.request.get('school')
         professor = self.request.get('professor')

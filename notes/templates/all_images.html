@@ -8,8 +8,8 @@
 <script src="/i/script.js"></script>
 <select id="view" onchange="toggleElement(this)">
 <option value="All">All</option>
-{% for image in images %}
-<option value="#{{image.key.urlsafe}}">{{image.school}}</option>
+{% for school in schools %}
+<option value="#{{image.key.urlsafe}}">{{school}}</option>
 {% endfor %}
 </select>
 <hr>

@@ -13,11 +13,10 @@
 <input type="submit" value="Update"/>
 </form>
 <br><br>
-<img src="/img?id={{image_id}}&height=320&width=320">
+<img src="/img?id={{image_id}}&height=640&width=640">
 <br><br>
 <form method="post" action="/delete" enctype="multipart/form-data">
 <input type="hidden" name="id" value="{{image_id}}"/>
 <input type="submit" value="Delete"/>
 </form>
 {% endblock %}
-
