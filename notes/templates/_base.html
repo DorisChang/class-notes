@@ -6,10 +6,10 @@
         <div class="topnav">
             <img id="logo" src="/p/logo.jpg">
             {% if logout_url %}
+                 <a href="{{logout_url}}">Sign Out</a>
                 <a href="/">Upload</a>
                 <a href="/images">My Notes</a>
                 <a href="/all-images">All Notes</a>
-                <a href="{{logout_url}}">Sign Out</a>
             {% else %}
                 <a href="{{login_url}}">Sign In</a>
             {% endif %}

@@ -34,6 +34,16 @@ def get_params():
 
 
 ###############################################################################
+def get_filtered_notes(filter):
+    result = list()
+    q = MyImage.query()
+    for i in q.fetch():
+        if i.school == filter:
+            result.append(i)
+    return result
+
+
+###############################################################################
 class MainHandler(webapp2.RequestHandler):
     def get(self):
         params = get_params()
@@ -54,6 +64,7 @@ class ImagesHandler(webapp2.RequestHandler):
 
         # we will pass this image list to the template
         params['images'] = result
+        params['num_notes'] = len(result)
         render_template(self, 'images.html', params)
 
 
@@ -233,6 +244,45 @@ class SaveEditsHandler(webapp2.RequestHandler):
         render_template(self, 'my_image.html', params)
 
 
+class FilterHandler(webapp2.RequestHandler):
+    def post(self):
+        params = get_params()
+        filter = self.request.get('filter')
+        if filter == "All":
+            params = get_params()
+
+            # first we retrieve the images for the current user
+            q = MyImage.query()
+            image_result = list()
+            school_result = list()
+            for i in q.fetch():
+                # we append each image to the list
+                image_result.append(i)
+                if i.school not in school_result:
+                    school_result.append(i.school)
+
+            params['images'] = image_result
+            params['schools'] = school_result
+
+            render_template(self, 'all_images.html', params)
+        else:
+            params = get_params()
+
+            # first we retrieve the images for the current user
+            q = MyImage.query()
+            school_result = list()
+            for i in q.fetch():
+                # we append each image to the list
+                if i.school not in school_result:
+                    school_result.append(i.school)
+
+            params['schools'] = school_result
+            image_result = get_filtered_notes(filter)
+            print("filter: " + filter)
+            params['images'] = image_result
+            render_template(self, 'all_images.html', params)
+
+
 ###############################################################################
 class MyImage(ndb.Model):
     name = ndb.StringProperty()
@@ -253,6 +303,7 @@ mappings = [
     ('/img', ImageManipulationHandler),
     ('/all-images', AllImagesHandler),
     ('/delete', DeleteHandler),
-    ('/save-edits', SaveEditsHandler)
+    ('/save-edits', SaveEditsHandler),
+    ('/filter', FilterHandler)
 ]
 app = webapp2.WSGIApplication(mappings, debug=True)
