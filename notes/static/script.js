@@ -1,19 +1,40 @@
-/* When the user clicks on the button,
-toggle between hiding and showing the dropdown content */
-function myFunction() {
-  document.getElementById("myDropdown").classList.toggle("show");
+function toggleElement(obj)
+{
+    var selectedItem = obj.options[obj.selectedIndex].value;
+    if(selectedItem == 'Kansas State University'){
+        var ksu = document.getElementsByClassName('Kansas State University');
+        for(var i = 0, length = ksu.length; i < length; i++) {
+           if( ksu[i].style.display == 'none'){
+              ksu[i].style.display = '';
+           }
+        }
+        var landlord = document.getElementsByClassName('Landlord');
+        for(var i = 0, length = landlord.length; i < length; i++) {
+           if( landlord[i].style.display == ''){
+              landlord[i].style.display = 'none';
+           } 
+        }
+    } else if(selectedItem == 'Landlord'){
+        var landlord = document.getElementsByClassName('Landlord');
+        for(var i = 0, length = landlord.length; i < length; i++) {
+           if( landlord[i].style.display == 'none'){
+              landlord[i].style.display = '';
+           } 
+        }
+        var tenants = document.getElementsByClassName('Tenant');
+        for(var i = 0, length = tenants.length; i < length; i++) {
+           if( tenants[i].style.display == ''){
+              tenants[i].style.display = 'none';
+           }
+        }
+    } else{
+        var landlord = document.getElementsByClassName('Landlord');
+        for(var i = 0, length = landlord.length; i < length; i++) {
+              landlord[i].style.display = '';
+        }
+        var tenants = document.getElementsByClassName('Tenant');
+        for(var i = 0, length = tenants.length; i < length; i++) {
+              tenants[i].style.display = '';
+        }
+    }
 }
-
-function filterFunction() {
-  var input, filter, ul, li, a, i;
-  input = document.getElementById("myInput");
-  filter = input.value.toUpperCase();
-  div = document.getElementById("myDropdown");
-  a = div.getElementsByTagName("a");
-  for (i = 0; i < a.length; i++) {
-    txtValue = a[i].textContent || a[i].innerText;
-    if (txtValue.toUpperCase().indexOf(filter) > -1) {
-      a[i].style.display = "";
-    } else {
-      a[i].style.display = "none";
-    }}}

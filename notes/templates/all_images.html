@@ -6,24 +6,21 @@
 <h2>Notes</h2>
 <link rel="stylesheet" href="/i/styles.css">
 <script src="/i/script.js"></script>
-<div class="dropdown">
-  <button onclick="myFunction()" class="dropbtn">Dropdown</button>
-  <div id="myDropdown" class="dropdown-content">
-    <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()">
-    {% for image in images %}
-    <a href="#{{image.key.urlsafe}}">{{image.school}}</a>
-    {% empty %}
-    There are no schools.
-    {% endfor %}
-  </div>
-</div>
+<select id="view" onchange="toggleElement(this)">
+<option value="All">All</option>
+{% for image in images %}
+<option value="#{{image.key.urlsafe}}">{{image.school}}</option>
+{% endfor %}
+</select>
 <hr>
 {% for image in images %}
-<img src="/img?id={{image.key.urlsafe}}&width=320&height=320" border="0"><br>
-<b>School: <b> {{image.school}}<br>
-<b>Class: </b> {{image.name}}<br>
-<a href="/image?id={{image.key.urlsafe}}">More Info</a><br>
-<hr>
+<div class="{{image.school}}">
+    <img src="/img?id={{image.key.urlsafe}}&width=320&height=320" border="0"><br>
+    <b>School: <b> {{image.school}}<br>
+    <b>Class: </b> {{image.name}}<br>
+    <a href="/image?id={{image.key.urlsafe}}">More Info</a><br>
+    <hr>
+</div>
 {% empty %}
 There are no notes.
 {% endfor %}
