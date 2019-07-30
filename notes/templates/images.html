@@ -3,9 +3,16 @@
 <head>
     <title>Browse Your Notes</title>
 </head>
-<h2>Notes</h2>
+<h2>My Notes</h2>
+<h5># Notes: {{num_notes}}</h5>
 {% for image in images %}
-<a href="/my-image?id={{image.key.urlsafe}}">{{image.name}}</a><br><br> 
+<div class="{{image.school}}">
+    <img src="/img?id={{image.key.urlsafe}}&width=320&height=320" border="0"><br>
+    <b>School: <b> {{image.school}}<br>
+    <b>Class: </b> {{image.name}}<br>
+    <a href="/image?id={{image.key.urlsafe}}">More Info</a><br>
+    <hr>
+</div>
 {% empty %}
 There are no notes.
 {% endfor %}
