@@ -192,7 +192,6 @@ class AllImagesHandler(webapp2.RequestHandler):
 
         params['images'] = image_result
         params['schools'] = school_result
- 
         render_template(self, 'all_images.html', params)
 
 
