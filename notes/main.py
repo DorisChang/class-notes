@@ -97,7 +97,7 @@ class FileUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
                     my_image.school = school
                     my_image.professor = professor
                     my_image.user = params['user']
-
+                    
                     # image is a BlobKeyProperty, so we will retrieve the key for this blob
                     my_image.image = blob_info.key()
                     my_image.put()
