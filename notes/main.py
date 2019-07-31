@@ -257,11 +257,18 @@ class SaveEditsHandler(webapp2.RequestHandler):
 
         params = get_params()
 
+        # we'll get the ID from the request
+        image_id = self.request.get('id')
+
+        # this will allow us to retrieve it from NDB
+        my_image = ndb.Key(urlsafe=image_id).get()
+
         params['image_id'] = img
         params['image_name'] = name
         params['image_description'] = description
         params['image_school'] = school
         params['image_professor'] = professor
+        params['images'] = my_image.images
 
         render_template(self, 'my_image.html', params)
 
