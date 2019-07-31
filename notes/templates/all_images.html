@@ -1,8 +1,10 @@
 {% extends "_base.html" %}
 {% block bodycontent %}
 <head>
+    <link rel="stylesheet" href="/i/allimg.css">
     <title>Browse All Notes</title>
 </head>
+<div class="allimg">
 <h2>All Notes</h2>
 <link rel="stylesheet" href="/i/styles.css">
 <form method="post" action="/filter" >
@@ -35,6 +37,7 @@
     <b>Class: </b> {{image.name}}<br>
     <a href="/image?id={{image.key.urlsafe}}">More Info</a><br>
     <hr>
+</div>
 </div>
 {% empty %}
 There are no notes.
