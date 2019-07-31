@@ -173,10 +173,8 @@ class ImageManipulationHandler(webapp2.RequestHandler):
         index = int(self.request.get("index"), 10)
         my_image = ndb.Key(urlsafe=image_id).get()
         print("Index value: " + str(index))
-        if len(my_image.images) <= (index-1):
-            blob_key = my_image.images[index].image
-        else:
-            blob_key = my_image.images[0].image
+        blob_key = my_image.images[index].image
+
         img = images.Image(blob_key=blob_key)
 
         modified = False
