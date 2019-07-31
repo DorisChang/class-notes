@@ -31,8 +31,8 @@
 </form>
 <hr>
 {% for image in images %}
-<div class="{{image.school}} & allimg">
-    <img src="/img?id={{image.key.urlsafe}}&index={{forloop.counter0}}&height=640&width=640"><br>
+<div class="{{image.school}}">
+    <img src="/img?id={{image.key.urlsafe}}&index=0&height=640&width=640"><br>
     <b>School: <b> {{image.school}}<br>
     <b>Class: </b> {{image.name}}<br>
     <a href="/image?id={{image.key.urlsafe}}">More Info</a><br>
