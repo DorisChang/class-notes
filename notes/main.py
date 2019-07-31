@@ -145,6 +145,24 @@ class FileUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
                 image_id = my_image.key.urlsafe()
                 self.redirect('/image?id=' + image_id)
 
+
+class AddComment(webapp2.RequestHandler):
+   def post(self):
+       image_id = self.request.get('id')
+       index = int(self.request.get('index'), 10)
+       my_image = ndb.Key(urlsafe=image_id).get()
+
+       comment = Comment()
+       comment.comment = self.request.get('comment')
+       user = users.get_current_user()
+       if user:
+           comment.user = user.email()
+
+       my_image.images[index].comments.append(comment)
+       my_image.put()
+       print(my_image.images[index].comments)
+       self.redirect('/image?id=' + image_id)
+
 ###############################################################################
 
 
@@ -154,7 +172,11 @@ class ImageManipulationHandler(webapp2.RequestHandler):
         image_id = self.request.get("id")
         index = int(self.request.get("index"), 10)
         my_image = ndb.Key(urlsafe=image_id).get()
-        blob_key = my_image.images[index].image
+        print("Index value: " + str(index))
+        if len(my_image.images) <= (index-1):
+            blob_key = my_image.images[index].image
+        else:
+            blob_key = my_image.images[0].image
         img = images.Image(blob_key=blob_key)
 
         modified = False
@@ -257,11 +279,18 @@ class SaveEditsHandler(webapp2.RequestHandler):
 
         params = get_params()
 
+        # we'll get the ID from the request
+        image_id = self.request.get('id')
+
+        # this will allow us to retrieve it from NDB
+        my_image = ndb.Key(urlsafe=image_id).get()
+
         params['image_id'] = img
         params['image_name'] = name
         params['image_description'] = description
         params['image_school'] = school
         params['image_professor'] = professor
+        params['images'] = my_image.images
 
         render_template(self, 'my_image.html', params)
 
@@ -404,6 +433,7 @@ mappings = [
     ('/', MainHandler),
     ('/images', ImagesHandler),
     ('/image', ImageHandler),
+    ('/addcomment', AddComment),
     ('/my-image', MyImageHandler),
     ('/upload', FileUploadHandler),
     ('/img', ImageManipulationHandler),
