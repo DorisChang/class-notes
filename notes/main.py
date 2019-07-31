@@ -103,6 +103,7 @@ class MyImageHandler(webapp2.RequestHandler):
         params['image_description'] = my_image.description
         params['image_school'] = my_image.school
         params['image_professor'] = my_image.professor
+        params['images'] = my_image.images
 
         render_template(self, 'my_image.html', params)
 
