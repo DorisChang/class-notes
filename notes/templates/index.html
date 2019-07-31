@@ -2,27 +2,32 @@
 {% block bodycontent %}
 <head>
     <title>Upload Note - Classnotes</title>
+    <link rel="stylesheet" href="/i/index.css">
 </head>
-<h2>Upload a note</h2>
-<form method="post" action="{{upload_url}}" enctype="multipart/form-data">
-    Class:<br>
-    <input name="name" required>
-    <br><br><br>
-    School:<br>
-    <input name="school" required>
-    <br><br><br>
-    Professor:<br>
-    <input name="professor" required>
-    <br><br><br>
-    Description:<br>
-    <input name="description" required>
-    <br><br><br>
-    File:<br>
-    <input type="file" name="file1" required><br>
-    <input type="file" name="file2"><br>
-    <input type="file" name="file3"><br>
-    <input type="file" name="file4"><br>
-    <br><br>
-    <input type="submit">
-</form>
+<body>
+<div class="upload">
+    <h2>Upload a Note!</h2>
+    <form method="post" action="{{upload_url}}" enctype="multipart/form-data">
+        Class:<br>
+        <input name="name" required>
+        <br><br><br>
+        School:<br>
+        <input name="school" required>
+        <br><br><br>
+        Professor:<br>
+        <input name="professor" required>
+        <br><br><br>
+        Description:<br>
+        <input name="description" required>
+        <br><br><br>
+        File:<br>
+        <input type="file" name="file1" required><br>
+        <input type="file" name="file2"><br>
+        <input type="file" name="file3"><br>
+        <input type="file" name="file4"><br>
+        <br><br>
+        <input type="submit">
+    </form>
+</div>
+</body>
 {% endblock %}

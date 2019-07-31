@@ -6,7 +6,7 @@
 
             .topnav {
             overflow: hidden;
-            background-color: #333;
+            background-color: #000000;
             }
 
             .topnav a {
@@ -29,6 +29,10 @@
             }
 
             #logo {
-                width: 10%;
-                height: 7.5%
+                width: 9%;
+                height: 6.25%
+            }
+
+            body {
+                background-color: #ffffff;
             }

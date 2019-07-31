@@ -1,9 +1,10 @@
 
 {% extends "_base.html" %}
 {% block bodycontent %}
-
+<div class="view">
 <head>
-   <title>{{image_name}}</title>
+    <link rel="stylesheet" href="/i/image.css">
+    <title>{{image_name}}</title>
 </head>
 <h2>Class: {{image_name}}</h2>
 <h3>School: {{image_school}}</h3>
@@ -23,5 +24,6 @@
    <input type="submit" value="Add Comment" />
 </form>
 {% endfor %}
+</div>
 {% endblock %}
 

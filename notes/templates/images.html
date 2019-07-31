@@ -1,6 +1,8 @@
 {% extends "_base.html" %}
 {% block bodycontent %}
+<div class="images">
 <head>
+    <link rel="stylesheet" href="/i/images.css">
     <title>Browse Your Notes</title>
 </head>
 <h2>My Notes</h2>
@@ -12,6 +14,7 @@
     <b>Class: </b> {{image.name}}<br>
     <a href="/my-image?id={{image.key.urlsafe}}">More Info</a><br>
     <hr>
+</div>
 </div>
 {% empty %}
 There are no notes.
