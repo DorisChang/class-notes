@@ -31,6 +31,7 @@
 {% for image in images %}
 <div class="{{image.school}}">
     <img src="/img?id={{image.key.urlsafe}}&index={{forloop.counter0}}&height=640&width=640"><br>
+    <input type="hidden" name="index" value="{{forloop.counter0}}"/>
     <b>School: <b> {{image.school}}<br>
     <b>Class: </b> {{image.name}}<br>
     <a href="/image?id={{image.key.urlsafe}}">More Info</a><br>
