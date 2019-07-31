@@ -31,15 +31,22 @@
 </form>
 <hr>
 {% for image in images %}
+<<<<<<< HEAD
 <div class="{{image.school}} & allimg">
     <img src="/img?id={{image.key.urlsafe}}&index={{forloop.counter0}}&height=640&width=640"><br>
     <input type="hidden" name="index" value="{{forloop.counter0}}"/>
+=======
+<div class="{{image.school}}">
+    <!--<img src="/img?id={{image.key.urlsafe}}&index={{forloop.counter0}}&height=640&width=640"><br>-->
+    <img src="/img?id={{image.key.urlsafe}}&index=0&height=640&width=640"><br>
+>>>>>>> 755a4fb1a0efd28f587f8e50b3c036df578187bc
     <b>School: <b> {{image.school}}<br>
     <b>Class: </b> {{image.name}}<br>
     <a href="/image?id={{image.key.urlsafe}}">More Info</a><br>
     <hr>
 </div>
 </div>
+
 {% empty %}
 There are no notes.
 {% endfor %}
