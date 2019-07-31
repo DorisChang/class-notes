@@ -11,7 +11,7 @@
 <h3>Description: {{image_description}}</h3>
 <br><br>
 {% for image in images %}
-<img src="/img?id={{image_id}}&index={{forloop.counter0}}&width=320&height=320" border="0"><br>
+<img src="/img?id={{image_id}}&index={{forloop.counter0}}&width=320&height=320" border="0" margin-bottom: 10px><br>
 {% for comment in image.comments %}
 {{comment.user}}<br>
 "{{comment.comment}}"<br>

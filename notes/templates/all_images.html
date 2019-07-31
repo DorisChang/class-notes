@@ -30,14 +30,14 @@
     <!--<input type="submit">-->
 </form>
 <hr>
+</div>
 {% for image in images %}
-<div class="{{image.school}}">
+<div class="{{image.school}} % allimg">
     <img src="/img?id={{image.key.urlsafe}}&index=0&height=640&width=640"><br>
     <b>School: <b> {{image.school}}<br>
     <b>Class: </b> {{image.name}}<br>
     <a href="/image?id={{image.key.urlsafe}}">More Info</a><br>
     <hr>
-</div>
 </div>
 
 {% empty %}
