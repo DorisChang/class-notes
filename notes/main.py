@@ -144,7 +144,9 @@ class FileUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
                 my_image.put()
                 image_id = my_image.key.urlsafe()
                 self.redirect('/image?id=' + image_id)
+
 ###############################################################################
+
 
 class ImageManipulationHandler(webapp2.RequestHandler):
     def get(self):
