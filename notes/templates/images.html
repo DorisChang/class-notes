@@ -2,18 +2,17 @@
 {% block bodycontent %}
 <div class="images">
 <head>
-    <link rel="stylesheet" href="/i/images.css">
+    <link rel="stylesheet" href="/i/allimg.css">
     <title>Browse Your Notes</title>
 </head>
 <h2>My Notes</h2>
 <h5># Notes: {{num_notes}}</h5>
 {% for image in images %}
-<div class="{{image.school}}">
+<div class="{{image.school}} % allimg">
     <img src="/img?id={{image.key.urlsafe}}&index=0&height=640&width=640"><br> 
     <b>School: <b> {{image.school}}<br>
     <b>Class: </b> {{image.name}}<br>
     <a href="/my-image?id={{image.key.urlsafe}}">More Info</a><br>
-    <hr>
 </div>
 </div>
 {% empty %}

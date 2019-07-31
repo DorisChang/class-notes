@@ -29,7 +29,6 @@
     </select>
     <!--<input type="submit">-->
 </form>
-<hr>
 </div>
 {% for image in images %}
 <div class="{{image.school}} % allimg">
@@ -37,7 +36,6 @@
     <b>School: <b> {{image.school}}<br>
     <b>Class: </b> {{image.name}}<br>
     <a href="/image?id={{image.key.urlsafe}}">More Info</a><br>
-    <hr>
 </div>
 
 {% empty %}
