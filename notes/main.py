@@ -280,24 +280,30 @@ class FilterHandler(webapp2.RequestHandler):
 
         for note in notes:
             if params['school_filter'] != "All":
+                s_query = MyImage.query(MyImage.school == params['school_filter']).fetch()
                 if note.school == params['school_filter']:
                     school_results.append(note)
             else:
                 school_results.append(note)
+                s_query = MyImage.query().fetch()
 
         for note in school_results:
             if params['name_filter'] != "All":
+                n_query = MyImage.query(MyImage.name == params['name_filter']).fetch()
                 if note.name == params['name_filter']:
                     name_results.append(note)
             else:
                 name_results.append(note)
+                n_query = MyImage.query().fetch()
 
         for note in name_results:
             if params['professor_filter'] != "All":
+                p_query = MyImage.query(MyImage.professor == params['professor_filter']).fetch()
                 if note.professor == params['professor_filter']:
                     professor_results.append(note)
             else:
                 professor_results.append(note)
+                p_query = MyImage.query().fetch()
 
         # print("Number of filtered results: " + str(len(professor_results)))
 
@@ -307,8 +313,15 @@ class FilterHandler(webapp2.RequestHandler):
         name_result = list()
         professor_result = list()
 
-        q = MyImage.query()
-        for i in q.fetch():
+        a_query = list()
+
+        for s in s_query:
+            for n in n_query:
+                for p in p_query:
+                    if s == n == p:
+                        a_query.append(s)
+
+        for i in a_query:
             if i.school not in school_result:
                 school_result.append(i.school)
             if i.name not in name_result:
