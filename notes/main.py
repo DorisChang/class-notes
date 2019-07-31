@@ -111,6 +111,8 @@ class MyImageHandler(webapp2.RequestHandler):
 class FileUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
     def post(self):
         params = get_params()
+        error_msg = ''
+
         if params['user']:
             upload_files = self.get_uploads()
             professor = self.request.get('professor')
@@ -131,6 +133,7 @@ class FileUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
                 # we want to make sure the upload is a known type.
                 if type in ['image/jpeg', 'image/png', 'image/gif', 'image/webp']:
                     my_image.image = blob_info.key()
+
                     my_image_data = Image()
                     my_image_data.image = blob_info.key()
                     my_image_data.comments = []
@@ -140,8 +143,6 @@ class FileUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
                 my_image.put()
                 image_id = my_image.key.urlsafe()
                 self.redirect('/image?id=' + image_id)
-
-
 ###############################################################################
 
 class ImageManipulationHandler(webapp2.RequestHandler):
@@ -204,14 +205,23 @@ class AllImagesHandler(webapp2.RequestHandler):
         q = MyImage.query()
         image_result = list()
         school_result = list()
+        name_result = list()
+        professor_result = list()
+
         for i in q.fetch():
-            # we append each image to the list
             image_result.append(i)
             if i.school not in school_result:
                 school_result.append(i.school)
+            if i.name not in name_result:
+                name_result.append(i.name)
+            if i.professor not in professor_result:
+                professor_result.append(i.professor)
 
-        params['images'] = image_result
         params['schools'] = school_result
+        params['names'] = name_result
+        params['professors'] = professor_result
+        params['images'] = image_result
+
         render_template(self, 'all_images.html', params)
 
 
@@ -253,11 +263,71 @@ class SaveEditsHandler(webapp2.RequestHandler):
         render_template(self, 'my_image.html', params)
 
 
+'''def get_filtered_results(notes, filter_type, filter):
+    results = list()
+    for note in notes:
+        if note.filter_type == filter:
+            results.append(note)
+    return results'''
+
+
 class FilterHandler(webapp2.RequestHandler):
     def post(self):
         params = get_params()
-        filter = self.request.get('filter')
-        if filter == "All":
+        params['school_filter'] = self.request.get('school-filter')
+        params['name_filter'] = self.request.get('name-filter')
+        params['professor_filter'] = self.request.get('professor-filter')
+
+        notes = MyImage.query()
+        school_results = list()
+        name_results = list()
+        professor_results = list()
+
+        for note in notes:
+            if params['school_filter'] != "All":
+                if note.school == params['school_filter']:
+                    school_results.append(note)
+            else:
+                school_results.append(note)
+
+        for note in school_results:
+            if params['name_filter'] != "All":
+                if note.name == params['name_filter']:
+                    name_results.append(note)
+            else:
+                name_results.append(note)
+
+        for note in name_results:
+            if params['professor_filter'] != "All":
+                if note.professor == params['professor_filter']:
+                    professor_results.append(note)
+            else:
+                professor_results.append(note)
+
+        # print("Number of filtered results: " + str(len(professor_results)))
+
+        params['images'] = professor_results
+
+        school_result = list()
+        name_result = list()
+        professor_result = list()
+
+        q = MyImage.query()
+        for i in q.fetch():
+            if i.school not in school_result:
+                school_result.append(i.school)
+            if i.name not in name_result:
+                name_result.append(i.name)
+            if i.professor not in professor_result:
+                professor_result.append(i.professor)
+
+        params['schools'] = school_result
+        params['names'] = name_result
+        params['professors'] = professor_result
+
+        render_template(self, 'all_images.html', params)
+
+        '''if filter == "All":
             params = get_params()
 
             # first we retrieve the images for the current user
@@ -289,7 +359,7 @@ class FilterHandler(webapp2.RequestHandler):
             image_result = get_filtered_notes(filter)
             print("filter: " + filter)
             params['images'] = image_result
-            render_template(self, 'all_images.html', params)
+            render_template(self, 'all_images.html', params)'''
 
 
 class Comment(ndb.Model):
