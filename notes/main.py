@@ -79,11 +79,12 @@ class ImageHandler(webapp2.RequestHandler):
         my_image = ndb.Key(urlsafe=image_id).get()
 
         # we'll set some parameters and pass this to the template
-        params['image_id'] = image_id
+        params['image_id'] = my_image.key.urlsafe()
         params['image_name'] = my_image.name
         params['image_description'] = my_image.description
         params['image_school'] = my_image.school
         params['image_professor'] = my_image.professor
+        params['images'] = my_image.images
         render_template(self, 'image.html', params)
 
 
@@ -102,6 +103,7 @@ class MyImageHandler(webapp2.RequestHandler):
         params['image_description'] = my_image.description
         params['image_school'] = my_image.school
         params['image_professor'] = my_image.professor
+
         render_template(self, 'my_image.html', params)
 
 
@@ -113,40 +115,43 @@ class FileUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
 
         if params['user']:
             upload_files = self.get_uploads()
+            professor = self.request.get('professor')
+            school = self.request.get('school')
+            description = self.request.get('description')
+            name = self.request.get('name')
+
+            my_image = MyImage()
+            my_image.name = name
+            my_image.description = description
+            my_image.school = school
+            my_image.professor = professor
+            my_image.user = params['user']
             for blob_info in upload_files:
                 # blob_info = upload_files[0]
                 type = blob_info.content_type
 
                 # we want to make sure the upload is a known type.
                 if type in ['image/jpeg', 'image/png', 'image/gif', 'image/webp']:
-                    name = self.request.get('name')
-                    description = self.request.get('description')
-                    school = self.request.get('school')
-                    professor = self.request.get('professor')
-                    my_image = MyImage()
-                    my_image.name = name
-                    my_image.description = description
-                    my_image.school = school
-                    my_image.professor = professor
-                    my_image.user = params['user']
-
                     my_image.image = blob_info.key()
-                    my_image.put()
-                    image_id = my_image.key.urlsafe()  # key for the object that can be passed around
-                    self.redirect('/image?id=' + image_id)
-                else:
-                    error_msg += "File type not accepted (accepted types: jpeg, png, gif, webp)"
 
+                    my_image_data = Image()
+                    my_image_data.image = blob_info.key()
+                    my_image_data.comments = []
 
+                    my_image.images.append(my_image_data)
 
+                my_image.put()
+                image_id = my_image.key.urlsafe()
+                self.redirect('/image?id=' + image_id)
 ###############################################################################
 
 class ImageManipulationHandler(webapp2.RequestHandler):
     def get(self):
 
         image_id = self.request.get("id")
+        index = int(self.request.get("index"), 10)
         my_image = ndb.Key(urlsafe=image_id).get()
-        blob_key = my_image.image
+        blob_key = my_image.images[index].image
         img = images.Image(blob_key=blob_key)
 
         modified = False
@@ -370,10 +375,21 @@ class FilterHandler(webapp2.RequestHandler):
             render_template(self, 'all_images.html', params)'''
 
 
+class Comment(ndb.Model):
+    comment = ndb.StringProperty()
+    user = ndb.StringProperty()
+
+
+class Image(ndb.Model):
+    image = ndb.BlobKeyProperty()
+    comments = ndb.LocalStructuredProperty(Comment, repeated=True)
+
+
 ###############################################################################
 class MyImage(ndb.Model):
     name = ndb.StringProperty()
     image = ndb.BlobKeyProperty()
+    images = ndb.LocalStructuredProperty(Image, repeated=True)
     description = ndb.StringProperty()
     school = ndb.StringProperty()
     professor = ndb.StringProperty()

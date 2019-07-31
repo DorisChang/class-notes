@@ -5,7 +5,6 @@
 </head>
 <h2>All Notes</h2>
 <link rel="stylesheet" href="/i/styles.css">
-<script src="/i/script.js"></script>
 <form method="post" action="/filter" >
     <select name="school-filter" id="view" onchange="this.form.submit()">
         <option value="All">All Schools</option>
@@ -31,7 +30,7 @@
 <hr>
 {% for image in images %}
 <div class="{{image.school}}">
-    <img src="/img?id={{image.key.urlsafe}}&width=320&height=320" border="0"><br>
+    <img src="/img?id={{image.key.urlsafe}}&index={{forloop.counter0}}&height=640&width=640"><br>
     <b>School: <b> {{image.school}}<br>
     <b>Class: </b> {{image.name}}<br>
     <a href="/image?id={{image.key.urlsafe}}">More Info</a><br>
