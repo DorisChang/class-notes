@@ -294,7 +294,7 @@ class FilterHandler(webapp2.RequestHandler):
             else:
                 professor_results.append(note)
 
-        print("Number of filtered results: " + str(len(professor_results)))
+        # print("Number of filtered results: " + str(len(professor_results)))
 
         params['images'] = professor_results
 
