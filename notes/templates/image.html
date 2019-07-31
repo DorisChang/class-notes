@@ -9,6 +9,8 @@
 <h3>Professor: {{image_professor}}</h3>
 <h3>Description: {{image_description}}</h3>
 <br><br>
-<img src="/img?id={{image_id}}&height=640&width=640">
+{% for image in images %}
+<img src="/img?id={{image_id}}&index={{forloop.counter0}}&height=640&width=640">
+{% endfor %}
 {% endblock %}
 

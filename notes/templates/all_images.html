@@ -5,16 +5,17 @@
 </head>
 <h2>All Notes</h2>
 <link rel="stylesheet" href="/i/styles.css">
-<script src="/i/script.js"></script>
 <form method="post" action="/filter" >
-<select name="filter" id="view" onchange="toggleElement(this)">
-<option value="All">All</option>
+    <select name="filter" id="view" onchange="this.form.submit()">
+    <option value="All">All Schools</option>
+    {% for school in schools %}
+    
 {% for school in schools %}
 <!--<option value="#{{image.key.urlsafe}}">{{school}}</option>-->
-<option value="{{school}}">{{school}}</option>
+<option value="{{school}}">{{school}}</option>s
 {% endfor %}
 </select>
-<input type="submit">
+<!--<input type="submit">-->
 </form>
 <hr>
 {% for image in images %}
