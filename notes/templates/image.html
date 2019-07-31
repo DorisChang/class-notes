@@ -1,8 +1,9 @@
+
 {% extends "_base.html" %}
 {% block bodycontent %}
 
 <head>
-    <title>{{image_name}}</title>
+   <title>{{image_name}}</title>
 </head>
 <h2>Class: {{image_name}}</h2>
 <h3>School: {{image_school}}</h3>
@@ -10,7 +11,17 @@
 <h3>Description: {{image_description}}</h3>
 <br><br>
 {% for image in images %}
-<img src="/img?id={{image_id}}&index={{forloop.counter0}}&height=640&width=640">
+<img src="/img?id={{image_id}}&index={{forloop.counter0}}&width=320&height=320" border="0"><br>
+{% for comment in image.comments %}
+{{comment.user}}<br>
+"{{comment.comment}}"<br>
+{% endfor %}
+<form method="post" action="/addcomment" enctype="multipart/form-data">
+   <input type="hidden" name="id" value="{{image_id}}"/>
+   <input type="hidden" name="index" value="{{forloop.counter0}}"/>
+   <textarea name="comment" rows="4" cols="100"></textarea>
+   <input type="submit" value="Add Comment" />
+</form>
 {% endfor %}
 {% endblock %}
 

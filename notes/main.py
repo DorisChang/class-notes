@@ -145,6 +145,24 @@ class FileUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
                 image_id = my_image.key.urlsafe()
                 self.redirect('/image?id=' + image_id)
 
+
+class AddComment(webapp2.RequestHandler):
+   def post(self):
+       image_id = self.request.get('id')
+       index = int(self.request.get('index'), 10)
+       my_image = ndb.Key(urlsafe=image_id).get()
+
+       comment = Comment()
+       comment.comment = self.request.get('comment')
+       user = users.get_current_user()
+       if user:
+           comment.user = user.email()
+
+       my_image.images[index].comments.append(comment)
+       my_image.put()
+       print(my_image.images[index].comments)
+       self.redirect('/image?id=' + image_id)
+
 ###############################################################################
 
 
@@ -404,6 +422,7 @@ mappings = [
     ('/', MainHandler),
     ('/images', ImagesHandler),
     ('/image', ImageHandler),
+    ('/addcomment', AddComment),
     ('/my-image', MyImageHandler),
     ('/upload', FileUploadHandler),
     ('/img', ImageManipulationHandler),
