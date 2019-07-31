@@ -109,6 +109,8 @@ class MyImageHandler(webapp2.RequestHandler):
 class FileUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
     def post(self):
         params = get_params()
+        error_msg = ''
+
         if params['user']:
             upload_files = self.get_uploads()
             for blob_info in upload_files:
@@ -132,6 +134,9 @@ class FileUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
                     my_image.put()
                     image_id = my_image.key.urlsafe()  # key for the object that can be passed around
                     self.redirect('/image?id=' + image_id)
+                else:
+                    error_msg += "File type not accepted (accepted types: jpeg, png, gif, webp)"
+
 
 
 ###############################################################################
@@ -264,9 +269,9 @@ class SaveEditsHandler(webapp2.RequestHandler):
 class FilterHandler(webapp2.RequestHandler):
     def post(self):
         params = get_params()
-        school_filter = self.request.get('school-filter')
-        name_filter = self.request.get('name-filter')
-        professor_filter = self.request.get('professor-filter')
+        params['school_filter'] = self.request.get('school-filter')
+        params['name_filter'] = self.request.get('name-filter')
+        params['professor_filter'] = self.request.get('professor-filter')
 
         notes = MyImage.query()
         school_results = list()
@@ -274,22 +279,22 @@ class FilterHandler(webapp2.RequestHandler):
         professor_results = list()
 
         for note in notes:
-            if school_filter != "All":
-                if note.school == school_filter:
+            if params['school_filter'] != "All":
+                if note.school == params['school_filter']:
                     school_results.append(note)
             else:
                 school_results.append(note)
 
         for note in school_results:
-            if name_filter != "All":
-                if note.name == name_filter:
+            if params['name_filter'] != "All":
+                if note.name == params['name_filter']:
                     name_results.append(note)
             else:
                 name_results.append(note)
 
         for note in name_results:
-            if professor_filter != "All":
-                if note.professor == professor_filter:
+            if params['professor_filter'] != "All":
+                if note.professor == params['professor_filter']:
                     professor_results.append(note)
             else:
                 professor_results.append(note)

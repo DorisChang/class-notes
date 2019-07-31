@@ -7,26 +7,26 @@
 <link rel="stylesheet" href="/i/styles.css">
 <script src="/i/script.js"></script>
 <form method="post" action="/filter" >
-    <select name="school-filter" id="view" onchange="toggleElement(this)">
+    <select name="school-filter" id="view" onchange="this.form.submit()">
         <option value="All">All Schools</option>
         {% for school in schools %}
         <!--<option value="#{{image.key.urlsafe}}">{{school}}</option>-->
-        <option value="{{school}}">{{school}}</option>
+        <option value="{{school}}"{% if school == school_filter %}selected{% endif %}>{{school}}</option>
         {% endfor %}
     </select>
-    <select name="name-filter" id="view" onchange="toggleElement(this)">
+    <select name="name-filter" id="view" onchange="this.form.submit()">
         <option value="All">All Classes</option>
         {% for name in names %}
-        <option value="{{name}}">{{name}}</option>
+        <option value="{{name}}"{% if name == name_filter %}selected{% endif %}>{{name}}</option>
         {% endfor %}
     </select>
-    <select name="professor-filter" id="view" onchange="toggleElement(this)">
+    <select name="professor-filter" id="view" onchange="this.form.submit()">
         <option value="All">All Professors</option>
         {% for professor in professors %}
-        <option value="{{professor}}">{{professor}}</option>
+        <option value="{{professor}}"{% if professor == professor_filter %}selected{% endif %}>{{professor}}</option>
         {% endfor %}
     </select>
-    <input type="submit">
+    <!--<input type="submit">-->
 </form>
 <hr>
 {% for image in images %}
