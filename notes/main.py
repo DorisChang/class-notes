@@ -1,6 +1,5 @@
 import os
 import webapp2
-import jinja2
 
 from google.appengine.api import images
 from google.appengine.api import users
@@ -17,11 +16,6 @@ def render_template(handler, templatename, templatevalues={}):
     html = template.render(path, templatevalues)
     handler.response.out.write(html)
 
-
-the_jinja_env = jinja2.Environment(
-    loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
-    extensions=['jinja2.ext.autoescape'],
-    autoescape=True)
 
 
 ###############################################################################
@@ -155,8 +149,18 @@ class FileUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
             my_image.school = school
             my_image.professor = professor
             my_image.user = params['user']
+<<<<<<< HEAD
 
             my_image.num_likes = 0
+=======
+            theUser = User()
+            theUser.nickname = 'karley'
+            theUser.school = 'school'
+            theUser.email = 'email'
+            theUser.put()
+            my_image.num_likes = 0
+
+>>>>>>> dc84d9de0fd305a40e23ad014368d11da4b8f524
             for blob_info in upload_files:
                 # blob_info = upload_files[0]
                 type = blob_info.content_type
@@ -176,23 +180,56 @@ class FileUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
                 self.redirect('/image?id=' + image_id)
 
 
+<<<<<<< HEAD
+=======
+class ViewEditProfile(webapp2.RequestHandler):
+    def get(self):  # for a get request
+        params = get_params()
+        render_template(self, 'editProfilePage.html', params)
+
+
+class ProfileHandler(webapp2.RequestHandler):
+    def post(self):
+        params = get_params()
+        error_msg = '' 
+
+        if params['user']:
+            nickname = self.request.get('user-nickname')
+            school = self.request.get('user-school')
+            email = params['user']
+
+            theUser = User()
+            theUser.nickname = nickname
+            theUser.school = school
+            theUser.email = email
+
+            theUser.put()
+            self.redirect('/')
+
+
+class User(ndb.Model):
+    nickname = ndb.StringProperty(required=True)
+    email = ndb.StringProperty(required=True)
+    school = ndb.StringProperty()
+>>>>>>> dc84d9de0fd305a40e23ad014368d11da4b8f524
+
 
 class AddComment(webapp2.RequestHandler):
-   def post(self):
-       image_id = self.request.get('id')
-       index = int(self.request.get('index'), 10)
-       my_image = ndb.Key(urlsafe=image_id).get()
+    def post(self):
+        image_id = self.request.get('id')
+        index = int(self.request.get('index'), 10)
+        my_image = ndb.Key(urlsafe=image_id).get()
 
-       comment = Comment()
-       comment.comment = self.request.get('comment')
-       user = users.get_current_user()
-       if user:
-           comment.user = user.email()
+        comment = Comment()
+        comment.comment = self.request.get('comment')
+        user = users.get_current_user()
+        if user:
+            comment.user = user.email()
 
-       my_image.images[index].comments.append(comment)
-       my_image.put()
-       print(my_image.images[index].comments)
-       self.redirect('/image?id=' + image_id)
+        my_image.images[index].comments.append(comment)
+        my_image.put()
+        print(my_image.images[index].comments)
+        self.redirect('/image?id=' + image_id)
 
 ###############################################################################
 
@@ -497,6 +534,7 @@ class AddLikeHandler(webapp2.RequestHandler):
         if not liked:
             like.user = user.email()
             my_image.likes.append(like)
+            my_image.liked = True
 
        # if user.email() not in my_image.likes:
         #     like.user = user.email()
@@ -552,13 +590,13 @@ class MyImage(ndb.Model):
     name = ndb.StringProperty()
     image = ndb.BlobKeyProperty()
     likes = ndb.LocalStructuredProperty(Like, repeated=True)
+    liked = ndb.BooleanProperty()
     num_likes = ndb.IntegerProperty()
     images = ndb.LocalStructuredProperty(Image, repeated=True)
     description = ndb.StringProperty()
     school = ndb.StringProperty()
     professor = ndb.StringProperty()
     user = ndb.StringProperty()
-
 
 
 ###############################################################################
