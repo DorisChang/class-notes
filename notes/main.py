@@ -1,5 +1,6 @@
 import os
 import webapp2
+import jinja2
 
 from google.appengine.api import images
 from google.appengine.api import users
@@ -17,13 +18,19 @@ def render_template(handler, templatename, templatevalues={}):
     handler.response.out.write(html)
 
 
+the_jinja_env = jinja2.Environment(
+    loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
+    extensions=['jinja2.ext.autoescape'],
+    autoescape=True)
+
+
 ###############################################################################
 # This function is for convenience - we'll use it to generate some general
 # page parameters.
 def get_params():
     result = {}
     user = users.get_current_user()
-    if user:
+    if user: 
         result['logout_url'] = users.create_logout_url('/')
         result['user'] = user.email()
         result['upload_url'] = blobstore.create_upload_url('/upload')
@@ -41,6 +48,8 @@ def get_filtered_notes(filter):
         if i.school == filter:
             result.append(i)
     return result
+
+
 
 
 ###############################################################################
@@ -131,7 +140,7 @@ class MyImageHandler(webapp2.RequestHandler):
 class FileUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
     def post(self):
         params = get_params()
-        error_msg = ''
+        error_msg = '' 
 
         if params['user']:
             upload_files = self.get_uploads()
@@ -146,7 +155,18 @@ class FileUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
             my_image.school = school
             my_image.professor = professor
             my_image.user = params['user']
+<<<<<<< HEAD
+
+            
+            theUser = User()
+            theUser.nickname = 'karley'
+            theUser.school = 'school'
+            theUser.email = 'email'
+            
+            theUser.put()
+=======
             my_image.num_likes = 0
+>>>>>>> 7ea5128a3bd1c353f6436d4f7ff1cb55db04472d
             for blob_info in upload_files:
                 # blob_info = upload_files[0]
                 type = blob_info.content_type
@@ -165,6 +185,35 @@ class FileUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
                 image_id = my_image.key.urlsafe()
                 self.redirect('/image?id=' + image_id)
 
+
+class ViewEditProfile(webapp2.RequestHandler):
+    def get(self):  # for a get request
+        welcome_template = the_jinja_env.get_template('templates/editProfilePage.html')
+        self.response.write(welcome_template.render())
+
+class ProfileHandler(webapp2.RequestHandler):
+    def post(self):
+        params = get_params()
+        error_msg = '' 
+
+        if params['user']:
+            nickname = self.request.get('user-nickname')
+            school = self.request.get('user-school')
+            email = params['user']
+
+            theUser = User()
+            theUser.nickname = nickname
+            theUser.school = school
+            theUser.email = email
+            
+            theUser.put()
+            self.redirect('/')
+
+
+class User(ndb.Model):
+    nickname = ndb.StringProperty(required=True)
+    email = ndb.StringProperty(required=True)
+    school = ndb.StringProperty()
 
 class AddComment(webapp2.RequestHandler):
    def post(self):
@@ -549,11 +598,14 @@ class MyImage(ndb.Model):
     user = ndb.StringProperty()
 
 
+
 ###############################################################################
 mappings = [
     ('/', MainHandler),
     ('/images', ImagesHandler),
     ('/image', ImageHandler),
+    ('/editProfile', ViewEditProfile),
+    ('/PutProfile', ProfileHandler),
     ('/addcomment', AddComment),
     ('/my-image', MyImageHandler),
     ('/upload', FileUploadHandler),
