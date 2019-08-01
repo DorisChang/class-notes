@@ -263,6 +263,7 @@ class AllImagesHandler(webapp2.RequestHandler):
         params['names'] = name_result
         params['professors'] = professor_result
         params['images'] = image_result
+        params['num_notes'] = len(image_result)
 
         render_template(self, 'all_images.html', params)
 
@@ -354,6 +355,7 @@ class FilterHandler(webapp2.RequestHandler):
         # print("Number of filtered results: " + str(len(professor_results)))
 
         params['images'] = professor_results 
+        params['num_notes'] = len(professor_results)
 
         # filter values that still apply
         school_result = list()
@@ -448,6 +450,7 @@ class MyFilterHandler(webapp2.RequestHandler):
         params['schools'] = school_result
         params['names'] = name_result
         params['professors'] = professor_result
+        params['num_notes'] = len(a_query)
 
         render_template(self, 'images.html', params)
 

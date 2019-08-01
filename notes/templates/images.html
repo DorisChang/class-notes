@@ -7,7 +7,6 @@
 </head>
 <div class="allimg">
 <h2>My Notes</h2>
-<h5># Notes: {{num_notes}}</h5>
 <input type="hidden" name="filter-content" value="my-notes"/>
 <form method="post" action="/myfilter" >
     <select name="school-filter" id="view" onchange="this.form.submit()">
@@ -31,6 +30,7 @@
     </select>
     <!--<input type="submit">-->
 </form>
+<h5># Results: {{num_notes}}</h5>
 </div>
 {% for image in images %}
 <div class="{{image.school}} % allimg">
