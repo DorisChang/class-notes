@@ -29,8 +29,16 @@
             }
 
             #logo {
-                width: 9%;
+                width: 10%;
                 height: 6.25%
+            }
+
+            #link {
+                position: absolute;
+                left: 0;
+                top: 0;
+                margin: 0;
+                padding: 0x 0x;
             }
 
             body {
