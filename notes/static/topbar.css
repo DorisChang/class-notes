@@ -51,3 +51,11 @@
                 width: 33%;
                 height: 25%;
             }
+
+            #google {
+                position: absolute;
+                right: 0;
+                bottom: 0;
+                width: 9.5%;
+                height: 13%
+            }
