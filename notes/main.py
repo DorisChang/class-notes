@@ -155,18 +155,16 @@ class FileUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
             my_image.school = school
             my_image.professor = professor
             my_image.user = params['user']
-<<<<<<< HEAD
 
-            
+
             theUser = User()
             theUser.nickname = 'karley'
             theUser.school = 'school'
             theUser.email = 'email'
-            
+
             theUser.put()
-=======
             my_image.num_likes = 0
->>>>>>> 7ea5128a3bd1c353f6436d4f7ff1cb55db04472d
+
             for blob_info in upload_files:
                 # blob_info = upload_files[0]
                 type = blob_info.content_type
