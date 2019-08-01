@@ -16,6 +16,11 @@
         {% if logout_url %}
         {% block bodycontent %}{% endblock %}
         {% else %}
+        <div class="main">
+            <img id="center" src="/p/logo.png">
+        </div>
+        <div class="main">
         Please sign in.
+        </div>
         {% endif %}
 </html>
