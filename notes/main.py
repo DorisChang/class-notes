@@ -1,6 +1,5 @@
 import os
 import webapp2
-import jinja2
 
 from google.appengine.api import images
 from google.appengine.api import users
@@ -17,11 +16,6 @@ def render_template(handler, templatename, templatevalues={}):
     html = template.render(path, templatevalues)
     handler.response.out.write(html)
 
-
-the_jinja_env = jinja2.Environment(
-    loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
-    extensions=['jinja2.ext.autoescape'],
-    autoescape=True)
 
 
 ###############################################################################
@@ -183,8 +177,8 @@ class FileUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
 
 class ViewEditProfile(webapp2.RequestHandler):
     def get(self):  # for a get request
-        welcome_template = the_jinja_env.get_template('templates/editProfilePage.html')
-        self.response.write(welcome_template.render())
+        params = get_params()
+        render_template(self, 'editProfilePage.html', params)
 
 class ProfileHandler(webapp2.RequestHandler):
     def post(self):
@@ -210,22 +204,23 @@ class User(ndb.Model):
     email = ndb.StringProperty(required=True)
     school = ndb.StringProperty()
 
+
 class AddComment(webapp2.RequestHandler):
-   def post(self):
-       image_id = self.request.get('id')
-       index = int(self.request.get('index'), 10)
-       my_image = ndb.Key(urlsafe=image_id).get()
+    def post(self):
+        image_id = self.request.get('id')
+        index = int(self.request.get('index'), 10)
+        my_image = ndb.Key(urlsafe=image_id).get()
 
-       comment = Comment()
-       comment.comment = self.request.get('comment')
-       user = users.get_current_user()
-       if user:
-           comment.user = user.email()
+        comment = Comment()
+        comment.comment = self.request.get('comment')
+        user = users.get_current_user()
+        if user:
+            comment.user = user.email()
 
-       my_image.images[index].comments.append(comment)
-       my_image.put()
-       print(my_image.images[index].comments)
-       self.redirect('/image?id=' + image_id)
+        my_image.images[index].comments.append(comment)
+        my_image.put()
+        print(my_image.images[index].comments)
+        self.redirect('/image?id=' + image_id)
 
 ###############################################################################
 
