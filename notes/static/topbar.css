@@ -36,3 +36,26 @@
             body {
                 background-color: #ffffff;
             }
+
+            div.main {
+                position: relative;
+                left: 0;
+                top: 30%;
+                width: 100%;
+                text-align: center;
+                font-size: 50px;
+                margin-bottom: 10px;
+            }
+
+            #center {
+                width: 33%;
+                height: 25%;
+            }
+
+            #google {
+                position: absolute;
+                right: 0;
+                bottom: 0;
+                width: 9.5%;
+                height: 13%
+            }

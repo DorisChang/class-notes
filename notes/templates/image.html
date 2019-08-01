@@ -19,7 +19,7 @@
 <form method="post" action="/addcomment" enctype="multipart/form-data">
    <input type="hidden" name="id" value="{{image_id}}"/>
    <input type="hidden" name="index" value="{{forloop.counter0}}"/>
-   <textarea name="comment" rows="4" cols="100"></textarea>
+   <textarea name="comment" rows="4" cols="90"></textarea>
    <input type="submit" value="Add Comment" />
 </form>
 {% endfor %}
