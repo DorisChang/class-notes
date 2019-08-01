@@ -13,7 +13,7 @@
 {% for image in images %}
 <img src="/img?id={{image_id}}&index={{forloop.counter0}}&width=640&height=640" border="0" margin-bottom: 10px><br>
 {% for comment in image.comments %}
-<strong>{{theUser.nickname}}<strong><br>
+<strong>{{comment.user}}<strong><br>
 "{{comment.comment}}"<br>
 {% endfor %}
 <form method="post" action="/addcomment" enctype="multipart/form-data">
