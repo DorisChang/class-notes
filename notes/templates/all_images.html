@@ -30,13 +30,8 @@
     </select>
     <!--<input type="submit">-->
 </form>
-
-<hr>
-
-
 <h5># Results: {{num_notes}}</h5>
 </div>
-
 {% for image in images %}
 <div class="{{image.school}} % allimg">
     <img src="/img?id={{image.key.urlsafe}}&index=0&height=640&width=640"><br>
@@ -49,8 +44,6 @@
         <input type="submit" value="Likes: {{image.num_likes}}"/>
     </form>
 </div>
-
-
 {% empty %}
 There are no notes.
 {% endfor %}
