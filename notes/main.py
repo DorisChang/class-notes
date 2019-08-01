@@ -311,14 +311,6 @@ class SaveEditsHandler(webapp2.RequestHandler):
         render_template(self, 'my_image.html', params)
 
 
-'''def get_filtered_results(notes, filter_type, filter):
-    results = list()
-    for note in notes:
-        if note.filter_type == filter:
-            results.append(note)
-    return results'''
-
-
 class FilterHandler(webapp2.RequestHandler):
     def post(self):
         params = get_params()
@@ -389,40 +381,6 @@ class FilterHandler(webapp2.RequestHandler):
 
         render_template(self, 'all_images.html', params)
 
-        '''if filter == "All":
-            params = get_params()
-
-            # first we retrieve the images for the current user
-            q = MyImage.query()
-            image_result = list()
-            school_result = list()
-            for i in q.fetch():
-                # we append each image to the list
-                image_result.append(i)
-                if i.school not in school_result:
-                    school_result.append(i.school)
-
-            params['images'] = image_result
-            params['schools'] = school_result
-
-            render_template(self, 'all_images.html', params)
-        else:
-            params = get_params()
-
-            # first we retrieve the images for the current user
-            q = MyImage.query()
-            school_result = list()
-            for i in q.fetch():
-                # we append each image to the list
-                if i.school not in school_result:
-                    school_result.append(i.school)
-
-            params['schools'] = school_result
-            image_result = get_filtered_notes(filter)
-            print("filter: " + filter)
-            params['images'] = image_result
-            render_template(self, 'all_images.html', params)'''
-
 
 class MyFilterHandler(webapp2.RequestHandler):
     def post(self):
@@ -485,13 +443,6 @@ class MyFilterHandler(webapp2.RequestHandler):
                 name_result.append(i.name)
             if i.professor not in professor_result:
                 professor_result.append(i.professor)
-
-        print("school result: ")
-        print(school_result)
-        print("name result: ")
-        print(name_result)
-        print("professor result: ")
-        print(professor_result)
 
         params['schools'] = school_result
         params['names'] = name_result
