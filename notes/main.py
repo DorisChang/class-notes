@@ -146,6 +146,7 @@ class FileUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
             my_image.school = school
             my_image.professor = professor
             my_image.user = params['user']
+            my_image.num_likes = 0
             for blob_info in upload_files:
                 # blob_info = upload_files[0]
                 type = blob_info.content_type
@@ -451,8 +452,79 @@ class MyFilterHandler(webapp2.RequestHandler):
         render_template(self, 'images.html', params)
 
 
+'''def get_note(img):
+    key = ndb.Key(urlsafe=img)
+    return key.get()'''
+
+class AddLikeHandler(webapp2.RequestHandler):
+    def post(self):
+        image_id = self.request.get('id')
+
+        # print("id: ")
+        # print(image_id)
+
+        my_image = ndb.Key(urlsafe=image_id).get()
+        user = users.get_current_user()
+        print("user: ")
+        print(user.email())
+
+        like = Like()
+        liked = False
+
+        print("BEFORE users who have liked this post: ")
+        print(my_image.likes)
+
+        for liked_user in my_image.likes:
+            print("liked_user: ")
+            print(liked_user)
+            if user.email() == liked_user.user:
+                liked = True
+
+        if not liked:
+            like.user = user.email()
+            my_image.likes.append(like)
+
+       # if user.email() not in my_image.likes:
+        #     like.user = user.email()
+          #   my_image.likes.append(like)
+
+        print("AFTER users who have liked this post: ")
+        print(my_image.likes)
+
+        my_image.num_likes = len(my_image.likes)
+
+        print("number of users who have liked this post:")
+        print(my_image.num_likes)
+
+        my_image.put()
+
+        self.redirect("/all-images")
+
+
+
+'''def post(self):
+       image_id = self.request.get('id')
+       index = int(self.request.get('index'), 10)
+       my_image = ndb.Key(urlsafe=image_id).get()
+
+       comment = Comment()
+       comment.comment = self.request.get('comment')
+       user = users.get_current_user()
+       if user:
+           comment.user = user.email()
+
+       my_image.images[index].comments.append(comment)
+       my_image.put()
+       print(my_image.images[index].comments)
+       self.redirect('/image?id=' + image_id)'''
+
+
 class Comment(ndb.Model):
     comment = ndb.StringProperty()
+    user = ndb.StringProperty()
+
+
+class Like(ndb.Model):
     user = ndb.StringProperty()
 
 
@@ -465,6 +537,8 @@ class Image(ndb.Model):
 class MyImage(ndb.Model):
     name = ndb.StringProperty()
     image = ndb.BlobKeyProperty()
+    likes = ndb.LocalStructuredProperty(Like, repeated=True)
+    num_likes = ndb.IntegerProperty()
     images = ndb.LocalStructuredProperty(Image, repeated=True)
     description = ndb.StringProperty()
     school = ndb.StringProperty()
@@ -485,6 +559,7 @@ mappings = [
     ('/delete', DeleteHandler),
     ('/save-edits', SaveEditsHandler),
     ('/filter', FilterHandler),
-    ('/myfilter', MyFilterHandler)
+    ('/myfilter', MyFilterHandler),
+    ('/add-like', AddLikeHandler)
 ]
 app = webapp2.WSGIApplication(mappings, debug=True)
