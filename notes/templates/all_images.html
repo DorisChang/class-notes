@@ -1,8 +1,10 @@
 {% extends "_base.html" %}
 {% block bodycontent %}
 <head>
+    <link rel="stylesheet" href="/i/allimg.css">
     <title>Browse All Notes</title>
 </head>
+<div class="allimg">
 <h2>All Notes</h2>
 <link rel="stylesheet" href="/i/styles.css">
 <form method="post" action="/filter" >
@@ -28,6 +30,20 @@
     <!--<input type="submit">-->
 </form>
 <hr>
+<<<<<<< HEAD
+=======
+{% for image in images %}
+<div class="{{image.school}}">
+    <!--<img src="/img?id={{image.key.urlsafe}}&index={{forloop.counter0}}&height=640&width=640"><br>-->
+    <img src="/img?id={{image.key.urlsafe}}&index=0&height=640&width=640"><br>
+    <b>School: <b> {{image.school}}<br>
+    <b>Class: </b> {{image.name}}<br>
+    <a href="/image?id={{image.key.urlsafe}}">More Info</a><br>
+    <hr>
+</div>
+</div>
+
+>>>>>>> 755a4fb1a0efd28f587f8e50b3c036df578187bc
 {% empty %}
 There are no notes.
 {% endfor %}

@@ -1,0 +1,8 @@
+div.view {
+    margin: auto;
+    margin-top: 50px;
+    width: 50%;
+    padding: 10px;
+    text-align: center;
+    border: 3px solid #000000;
+}

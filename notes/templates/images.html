@@ -1,19 +1,25 @@
 {% extends "_base.html" %}
 {% block bodycontent %}
+<div class="images">
 <head>
+    <link rel="stylesheet" href="/i/images.css">
     <title>Browse Your Notes</title>
 </head>
 <h2>My Notes</h2>
 <h5># Notes: {{num_notes}}</h5>
 {% for image in images %}
 <div class="{{image.school}}">
-    <img src="/img?id={{image.key.urlsafe}}&index={{forloop.counter0}}&height=640&width=640"><br> 
+    <img src="/img?id={{image.key.urlsafe}}&index=0&height=640&width=640"><br> 
     <b>School: <b> {{image.school}}<br>
     <b>Class: </b> {{image.name}}<br>
     <a href="/my-image?id={{image.key.urlsafe}}">More Info</a><br>
     <hr>
 </div>
+<<<<<<< HEAD
 
+=======
+</div>
+>>>>>>> 755a4fb1a0efd28f587f8e50b3c036df578187bc
 {% empty %}
 There are no notes.
 {% endfor %}
