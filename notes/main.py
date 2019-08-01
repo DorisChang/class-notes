@@ -530,6 +530,7 @@ class AddLikeHandler(webapp2.RequestHandler):
         if not liked:
             like.user = user.email()
             my_image.likes.append(like)
+            my_image.liked = True
 
        # if user.email() not in my_image.likes:
         #     like.user = user.email()
@@ -585,6 +586,7 @@ class MyImage(ndb.Model):
     name = ndb.StringProperty()
     image = ndb.BlobKeyProperty()
     likes = ndb.LocalStructuredProperty(Like, repeated=True)
+    liked = ndb.BooleanProperty()
     num_likes = ndb.IntegerProperty()
     images = ndb.LocalStructuredProperty(Image, repeated=True)
     description = ndb.StringProperty()
