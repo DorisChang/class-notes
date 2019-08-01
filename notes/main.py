@@ -180,6 +180,7 @@ class ViewEditProfile(webapp2.RequestHandler):
         params = get_params()
         render_template(self, 'editProfilePage.html', params)
 
+
 class ProfileHandler(webapp2.RequestHandler):
     def post(self):
         params = get_params()
@@ -194,7 +195,7 @@ class ProfileHandler(webapp2.RequestHandler):
             theUser.nickname = nickname
             theUser.school = school
             theUser.email = email
-            
+
             theUser.put()
             self.redirect('/')
 
@@ -588,7 +589,6 @@ class MyImage(ndb.Model):
     school = ndb.StringProperty()
     professor = ndb.StringProperty()
     user = ndb.StringProperty()
-
 
 
 ###############################################################################
