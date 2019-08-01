@@ -2,18 +2,43 @@
 {% block bodycontent %}
 <div class="images">
 <head>
-    <link rel="stylesheet" href="/i/images.css">
+    <link rel="stylesheet" href="/i/allimg.css">
     <title>Browse Your Notes</title>
 </head>
+<div class="allimg">
 <h2>My Notes</h2>
-<h5># Notes: {{num_notes}}</h5>
+<input type="hidden" name="filter-content" value="my-notes"/>
+<form method="post" action="/myfilter" >
+    <select name="school-filter" id="view" onchange="this.form.submit()">
+        <option value="All">All Schools</option>
+        {% for school in schools %}
+        <!--<option value="#{{image.key.urlsafe}}"{{school}}</option>-->
+        <option value="{{school}}"{% if school == school_filter %}selected{% endif %}>{{school}}</option>
+        {% endfor %}
+    </select>
+    <select name="name-filter" id="view" onchange="this.form.submit()">
+        <option value="All">All Classes</option>
+        {% for name in names %}
+        <option value="{{name}}"{% if name == name_filter %}selected{% endif %}>{{name}}</option>
+        {% endfor %}
+    </select>
+    <select name="professor-filter" id="view" onchange="this.form.submit()">
+        <option value="All">All Professors</option>
+        {% for professor in professors %}
+        <option value="{{professor}}"{% if professor == professor_filter %}selected{% endif %}>{{professor}}</option>
+        {% endfor %}
+    </select>
+    <!--<input type="submit">-->
+</form>
+<h5># Results: {{num_notes}}</h5>
+</div>
 {% for image in images %}
-<div class="{{image.school}}">
+<div class="{{image.school}} % allimg">
     <img src="/img?id={{image.key.urlsafe}}&index=0&height=640&width=640"><br> 
     <b>School: <b> {{image.school}}<br>
     <b>Class: </b> {{image.name}}<br>
     <a href="/my-image?id={{image.key.urlsafe}}">More Info</a><br>
-    <hr>
+    
 </div>
 <<<<<<< HEAD
 

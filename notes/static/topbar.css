@@ -29,10 +29,41 @@
             }
 
             #logo {
-                width: 9%;
+                width: 10%;
                 height: 6.25%
+            }
+
+            #link {
+                position: absolute;
+                left: 0;
+                top: 0;
+                margin: 0;
+                padding: 0x 0x;
             }
 
             body {
                 background-color: #ffffff;
+            }
+
+            div.main {
+                position: relative;
+                left: 0;
+                top: 30%;
+                width: 100%;
+                text-align: center;
+                font-size: 50px;
+                margin-bottom: 10px;
+            }
+
+            #center {
+                width: 33%;
+                height: 25%;
+            }
+
+            #google {
+                position: relative;
+                right: 0;
+                bottom: 0;
+                width: 9.5%;
+                height: 13%
             }
