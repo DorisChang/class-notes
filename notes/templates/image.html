@@ -11,7 +11,7 @@
 <h3>Description: {{image_description}}</h3>
 <br><br>
 {% for image in images %}
-<img src="/img?id={{image_id}}&index={{forloop.counter0}}&width=320&height=320" border="0" margin-bottom: 10px><br>
+<img src="/img?id={{image_id}}&index={{forloop.counter0}}&width=640&height=640" border="0" margin-bottom: 10px><br>
 {% for comment in image.comments %}
 {{comment.user}}<br>
 "{{comment.comment}}"<br>
@@ -23,6 +23,13 @@
    <input type="submit" value="Add Comment" />
 </form>
 {% endfor %}
+<!--REMOVE BEFORE PRESENTATION-->
+<br><br>
+<form method="post" action="/delete" enctype="multipart/form-data">
+<input type="hidden" name="id" value="{{image_id}}"/>
+<input type="submit" value="Delete"/>
+</form>
+<!---->
 </div>
 {% endblock %}
 

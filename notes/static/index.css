@@ -18,8 +18,8 @@ input[type=submit] {
 }
 
 .btn {
-  border: 2px solid gray;
-  color: gray;
+  border: 5px solid black;
+  color: black;
   background-color: white;
   padding: 8px 20px;
   border-radius: 8px;
