@@ -8,6 +8,29 @@
 <div class="allimg">
 <h2>My Notes</h2>
 <h5># Notes: {{num_notes}}</h5>
+<input type="hidden" name="filter-content" value="my-notes"/>
+<form method="post" action="/myfilter" >
+    <select name="school-filter" id="view" onchange="this.form.submit()">
+        <option value="All">All Schools</option>
+        {% for school in schools %}
+        <!--<option value="#{{image.key.urlsafe}}"{{school}}</option>-->
+        <option value="{{school}}"{% if school == school_filter %}selected{% endif %}>{{school}}</option>
+        {% endfor %}
+    </select>
+    <select name="name-filter" id="view" onchange="this.form.submit()">
+        <option value="All">All Classes</option>
+        {% for name in names %}
+        <option value="{{name}}"{% if name == name_filter %}selected{% endif %}>{{name}}</option>
+        {% endfor %}
+    </select>
+    <select name="professor-filter" id="view" onchange="this.form.submit()">
+        <option value="All">All Professors</option>
+        {% for professor in professors %}
+        <option value="{{professor}}"{% if professor == professor_filter %}selected{% endif %}>{{professor}}</option>
+        {% endfor %}
+    </select>
+    <!--<input type="submit">-->
+</form>
 </div>
 {% for image in images %}
 <div class="{{image.school}} % allimg">
@@ -15,6 +38,7 @@
     <b>School: <b> {{image.school}}<br>
     <b>Class: </b> {{image.name}}<br>
     <a href="/my-image?id={{image.key.urlsafe}}">More Info</a><br>
+    
 </div>
 </div>
 {% empty %}
