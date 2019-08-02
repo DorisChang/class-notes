@@ -49,10 +49,10 @@ class MainHandler(webapp2.RequestHandler):
     def get(self):
         params = get_params()
         user = users.get_current_user()
-        if user and ndb.Key(User, user.email()).get().school:
-            school = ndb.Key(User, user.email()).get().school
-        else:
-            school = ""
+        school = ""
+        if user and ndb.Key(User, user.email()).get():
+            if ndb.Key(User, user.email()).get().school:
+                school = ndb.Key(User, user.email()).get().school
         params['school'] = school
         render_template(self, 'index.html', params)
 
@@ -93,8 +93,9 @@ class ImagesHandler(webapp2.RequestHandler):
         params['num_notes'] = len(result)
         user = users.get_current_user()
         params['user_profile'] = ndb.Key(User, user.email()).get()
-        if not params['user_profile'].nickname:
-            params['user_profile'].nickname = "User"
+        if params['user_profile']:
+            if params['user_profile'].nickname == "":
+                params['user_profile'].nickname = "User"
         render_template(self, 'images.html', params)
 
 
@@ -468,6 +469,12 @@ class MyFilterHandler(webapp2.RequestHandler):
         params['names'] = name_result
         params['professors'] = professor_result
         params['num_notes'] = len(a_query)
+
+        user = users.get_current_user()
+        params['user_profile'] = ndb.Key(User, user.email()).get()
+        if params['user_profile']:
+            if params['user_profile'].nickname == "":
+                params['user_profile'].nickname = "User"
 
         render_template(self, 'images.html', params)
 
