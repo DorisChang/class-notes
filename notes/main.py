@@ -134,7 +134,6 @@ class MyImageHandler(webapp2.RequestHandler):
 class FileUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
     def post(self):
         params = get_params()
-        error_msg = '' 
 
         if params['user']:
             upload_files = self.get_uploads()
@@ -151,7 +150,7 @@ class FileUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
             my_image.user = params['user']
 
             my_image.num_likes = 0
-        
+
             for blob_info in upload_files:
                 # blob_info = upload_files[0]
                 type = blob_info.content_type
@@ -460,10 +459,6 @@ class MyFilterHandler(webapp2.RequestHandler):
         render_template(self, 'images.html', params)
 
 
-'''def get_note(img):
-    key = ndb.Key(urlsafe=img)
-    return key.get()'''
-
 class AddLikeHandler(webapp2.RequestHandler):
     def post(self):
         image_id = self.request.get('id')
@@ -493,10 +488,6 @@ class AddLikeHandler(webapp2.RequestHandler):
             my_image.likes.append(like)
             my_image.liked = True
 
-       # if user.email() not in my_image.likes:
-        #     like.user = user.email()
-          #   my_image.likes.append(like)
-
         print("AFTER users who have liked this post: ")
         print(my_image.likes)
 
@@ -510,22 +501,30 @@ class AddLikeHandler(webapp2.RequestHandler):
         self.redirect("/all-images")
 
 
+class ViewEditProfile(webapp2.RequestHandler):
+    def get(self):  # for a get request
+        params = get_params()
+        user = users.get_current_user()
+        params['user_profile'] = ndb.Key(User, user.email()).get()
+        render_template(self, 'editProfilePage.html', params)
 
-'''def post(self):
-       image_id = self.request.get('id')
-       index = int(self.request.get('index'), 10)
-       my_image = ndb.Key(urlsafe=image_id).get()
 
-       comment = Comment()
-       comment.comment = self.request.get('comment')
-       user = users.get_current_user()
-       if user:
-           comment.user = user.email()
+class ProfileHandler(webapp2.RequestHandler):
+    def post(self):
+        user = users.get_current_user()
+        theUser = User(
+           nickname=self.request.get('user-nickname'),
+           school=self.request.get('user-school'),
+           email=user.email(),
+           id=user.email())
+        theUser.put()
+        self.redirect('/')
 
-       my_image.images[index].comments.append(comment)
-       my_image.put()
-       print(my_image.images[index].comments)
-       self.redirect('/image?id=' + image_id)'''
+
+class User(ndb.Model):
+    nickname = ndb.StringProperty()
+    school = ndb.StringProperty()
+    email = ndb.StringProperty()
 
 
 class Comment(ndb.Model):
@@ -558,18 +557,20 @@ class MyImage(ndb.Model):
 
 ###############################################################################
 mappings = [
-    ('/', MainHandler),
-    ('/images', ImagesHandler),
-    ('/image', ImageHandler),
-    ('/addcomment', AddComment),
-    ('/my-image', MyImageHandler),
-    ('/upload', FileUploadHandler),
-    ('/img', ImageManipulationHandler),
-    ('/all-images', AllImagesHandler),
-    ('/delete', DeleteHandler),
-    ('/save-edits', SaveEditsHandler),
-    ('/filter', FilterHandler),
-    ('/myfilter', MyFilterHandler),
-    ('/add-like', AddLikeHandler)
+   ('/', MainHandler),
+   ('/images', ImagesHandler),
+   ('/image', ImageHandler),
+   ('/addcomment', AddComment),
+   ('/my-image', MyImageHandler),
+   ('/upload', FileUploadHandler),
+   ('/img', ImageManipulationHandler),
+   ('/all-images', AllImagesHandler),
+   ('/delete', DeleteHandler),
+   ('/save-edits', SaveEditsHandler),
+   ('/filter', FilterHandler),
+   ('/myfilter', MyFilterHandler),
+   ('/add-like', AddLikeHandler),
+   ('/PutProfile', ProfileHandler),
+   ('/profile', ViewEditProfile)
 ]
 app = webapp2.WSGIApplication(mappings, debug=True)

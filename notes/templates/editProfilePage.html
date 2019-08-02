@@ -1,21 +1,21 @@
 {% extends "_base.html" %}
 {% block bodycontent %}
 <title>Edit Profile Page</title>
-    <head>
-    <link rel="stylesheet" href="/i/allimg.css"/>
-    <title>Edit Profile</title>
- </head>
-  <body>
-    <div class="allimg">
-      <h1>Edit Your Profile</h1>
-      <form method= "post" action="/PutProfile" >
-            Please enter a nickname:<br>
-            <input type="text" name="user-nickname" value="enter nickname"><br><br>
-            Please enter your school:<br>
-            <input type= "text" name= "user-school" value="enter school">
-            <br>
-            <input type="submit" value="Go!">
-    </form>
-    </div>
-  </body>
+   <head>
+   <link rel="stylesheet" href="/i/allimg.css"/>
+   <title>Edit Profile</title>
+</head>
+ <body>
+   <div class="allimg">
+     <h1>Edit Your Profile</h1>
+     <form method= "post" action="/PutProfile" >
+           Please enter a nickname:<br>
+           <input type="text" name="user-nickname" value="{{user_profile.nickname}}" placeholder="nickname"><br><br>
+           Please enter your school:<br>
+           <input type= "text" name= "user-school" value="{{user_profile.school}}" placeholder="school">
+           <br><br>
+           <input type="submit" value="Submit">
+   </form>
+   </div>
+ </body>
 {% endblock %}
