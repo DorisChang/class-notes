@@ -44,12 +44,16 @@ def get_filtered_notes(filter):
     return result
 
 
-
-
 ###############################################################################
 class MainHandler(webapp2.RequestHandler):
     def get(self):
         params = get_params()
+        user = users.get_current_user()
+        if user and ndb.Key(User, user.email()).get().school:
+            school = ndb.Key(User, user.email()).get().school
+        else:
+            school = ""
+        params['school'] = school
         render_template(self, 'index.html', params)
 
 
@@ -89,6 +93,8 @@ class ImagesHandler(webapp2.RequestHandler):
         params['num_notes'] = len(result)
         user = users.get_current_user()
         params['user_profile'] = ndb.Key(User, user.email()).get()
+        if not params['user_profile'].nickname:
+            params['user_profile'].nickname = "User"
         render_template(self, 'images.html', params)
 
 
@@ -184,6 +190,10 @@ class AddComment(webapp2.RequestHandler):
         if user:
             comment.user = user.email()
             comment.nickname = (ndb.Key(User, user.email()).get()).nickname
+
+            if not comment.nickname:
+                comment.nickname = "User"
+
 
         my_image.images[index].comments.append(comment)
         my_image.put()
