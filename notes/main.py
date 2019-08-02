@@ -149,18 +149,9 @@ class FileUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
             my_image.school = school
             my_image.professor = professor
             my_image.user = params['user']
-<<<<<<< HEAD
 
             my_image.num_likes = 0
-=======
-            theUser = User()
-            theUser.nickname = 'karley'
-            theUser.school = 'school'
-            theUser.email = 'email'
-            theUser.put()
-            my_image.num_likes = 0
-
->>>>>>> dc84d9de0fd305a40e23ad014368d11da4b8f524
+        
             for blob_info in upload_files:
                 # blob_info = upload_files[0]
                 type = blob_info.content_type
@@ -178,40 +169,6 @@ class FileUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
                 my_image.put()
                 image_id = my_image.key.urlsafe()
                 self.redirect('/image?id=' + image_id)
-
-
-<<<<<<< HEAD
-=======
-class ViewEditProfile(webapp2.RequestHandler):
-    def get(self):  # for a get request
-        params = get_params()
-        render_template(self, 'editProfilePage.html', params)
-
-
-class ProfileHandler(webapp2.RequestHandler):
-    def post(self):
-        params = get_params()
-        error_msg = '' 
-
-        if params['user']:
-            nickname = self.request.get('user-nickname')
-            school = self.request.get('user-school')
-            email = params['user']
-
-            theUser = User()
-            theUser.nickname = nickname
-            theUser.school = school
-            theUser.email = email
-
-            theUser.put()
-            self.redirect('/')
-
-
-class User(ndb.Model):
-    nickname = ndb.StringProperty(required=True)
-    email = ndb.StringProperty(required=True)
-    school = ndb.StringProperty()
->>>>>>> dc84d9de0fd305a40e23ad014368d11da4b8f524
 
 
 class AddComment(webapp2.RequestHandler):
