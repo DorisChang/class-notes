@@ -87,6 +87,8 @@ class ImagesHandler(webapp2.RequestHandler):
         # we will pass this image list to the template
         params['images'] = result
         params['num_notes'] = len(result)
+        user = users.get_current_user()
+        params['user_profile'] = ndb.Key(User, user.email()).get()
         render_template(self, 'images.html', params)
 
 
@@ -181,6 +183,7 @@ class AddComment(webapp2.RequestHandler):
         user = users.get_current_user()
         if user:
             comment.user = user.email()
+            comment.nickname = (ndb.Key(User, user.email()).get()).nickname
 
         my_image.images[index].comments.append(comment)
         my_image.put()
@@ -518,7 +521,7 @@ class ProfileHandler(webapp2.RequestHandler):
            email=user.email(),
            id=user.email())
         theUser.put()
-        self.redirect('/')
+        self.redirect('/profile')
 
 
 class User(ndb.Model):
@@ -530,6 +533,7 @@ class User(ndb.Model):
 class Comment(ndb.Model):
     comment = ndb.StringProperty()
     user = ndb.StringProperty()
+    nickname = ndb.StringProperty()
 
 
 class Like(ndb.Model):
